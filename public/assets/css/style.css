@@ -51,9 +51,6 @@ img { max-width: 100%; }
 	-moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
 	-o-transition: all .6s; -moz-transition: all .6s; -webkit-transition: all .6s; -ms-transition: all .6s; transition: all .6s;
 }
-.navbar-no-bg {
-    background: none;
-}
 
 ul.navbar-nav {
 	font-family: 'Josefin Sans', sans-serif;
@@ -86,11 +83,7 @@ ul.navbar-nav {
 .navbar-inverse ul.navbar-nav li a.btn-link-3:active,
 .navbar-inverse ul.navbar-nav li a.btn-link-3:active:focus { outline: 0; opacity: 0.6; color: #fff; }
 
-.navbar-brand {
-	width: 102px;
-	background: url(../img/logo.png) left center no-repeat;
-	text-indent: -99999px;
-}
+
 .navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand { margin-left: 0; }
 
 
@@ -154,14 +147,28 @@ footer { padding: 40px 0 45px 0; background: #f8f8f8; }
 
 }
 
+.navbar{
+	background-color: #f44336;
+}
+
+.navbar-brand{
+    color: white;
+    font-weight: bold;
+}
+
+.navbar-inverse .navbar-brand{
+    color: white;
+    font-weight: bold;
+}
+
+.form-inline{
+    padding-top: 8px;
+}
+
 @media (max-width: 415px) {
 	
 	h1, h2 { font-size: 36px; }
 
-}
-
-.navbar{
-	background: #f44336;
 }
 
 
@@ -174,10 +181,6 @@ only screen and (     -o-min-device-pixel-ratio: 2/1),
 only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
-	
-	/* logo */
-    .navbar-brand {
-    	background-image: url(../img/logo@2x.png) !important; background-repeat: no-repeat !important; background-size: 102px 32px !important;
-    }
+
 	
 }
