@@ -6,6 +6,7 @@ const express = require('express'),
   passport = require('passport');
   cookieParser = require('cookie-parser');
   engine = require('ejs-locals');
+  favicon = require('serve-favicon')
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ app.engine('ejs', engine);
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/images/favicon.jpg'));
 // router
 const router = require('./routes/mainRouteur');
 // routes
