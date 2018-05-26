@@ -1,6 +1,6 @@
 const express = require('express');
 const userRoute = express.Router();
-
+const escape = require("html-escape");
 //authentication service
 const authService = require('./authService');
 
@@ -15,7 +15,7 @@ const UserDAO = require('../models/user/userDAO')(pg, pgUrl);
 userRoute.post('/signup', function (req, res) {
   console.log('signup');
 
-  const user = new User(null, req.body.pseudo_user, authService().hashPassword(req.body.password_user), req.body.email_user, false, null);
+  const user = new User(null, escape(req.body.pseudo_user), authService().hashPassword(req.body.password_user), escape(req.body.email_user), false, null);
   UserDAO.getByEmailPseudo(user.pseudo_user,user.email_user,{
     fail: function () {
       UserDAO.create(user, {
