@@ -42,7 +42,7 @@ userRoute.post('/signup', function (req, res) {
 
 userRoute.post('/signin', function(req, res){
   console.log('signin');
-  UserDAO.getByEmail(req.email_user,{
+  UserDAO.getByPseudo(req.pseudo_user,{
     success: function (user) {
       if(authService().checkPassword(req.body.password_user, user.password_user)){
         var token = authService().createToken();

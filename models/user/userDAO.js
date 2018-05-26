@@ -52,20 +52,21 @@ module.exports = function (pg, url) {
         } else if(res.rowCount == 0) {
           callback.fail(null);
         } else {
-          callback.success(res);
+            var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
+            callback.success(user);
         }
       })
     });
   };
 
   //callback succeed(rows) if an user with email exist
-  module.getByEmail = function (email, callback) {
+  module.getByPseudo = function (email, callback) {
     console.log('______getByEmail______');
     pool.connect(function (err, client, done) {
       var query = {
         name: 'fetch-by-pseudo',
         text: 'SELECT * FROM public.user WHERE pseudo_user = $1',
-        values: [email]
+        values: [pseudo]
       };
 
       pool.query(query, (err, res) => {
@@ -75,11 +76,36 @@ module.exports = function (pg, url) {
         } else if(res.rowCount == 0) {
           callback.fail(null);
         } else {
-          callback.success(res);
+            var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
+            callback.success(user);
         }
       })
     });
   };
+
+    //callback succeed(rows) if an user with email exist
+    module.getById = function (id, callback) {
+        console.log('______getById______');
+        pool.connect(function (err, client, done) {
+            var query = {
+                name: 'fetch-by-id',
+                text: 'SELECT * FROM public.user WHERE id_user = $1',
+                values: [id]
+            };
+
+            pool.query(query, (err, res) => {
+                if (err) {
+                    console.log(err.stack);
+                    callback.fail(err);
+                } else if(res.rowCount == 0) {
+                    callback.fail(null);
+                } else {
+                    var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
+                    callback.success(user);
+                }
+            })
+        });
+    };
 
   return module;
 };

@@ -18,7 +18,7 @@ app.use(cookieParser());
 app.engine('ejs', engine);
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
-
+app.use(express.static(__dirname + '/public'));
 // router
 const router = require('./routes/mainRouteur');
 // routes
@@ -28,10 +28,7 @@ app.use('*',router);
 //récup
 app.set( 'port', process.env.PORT);
 
-// Start node server
-const server = app.listen( app.get( 'port' ), function() {
-  console.log( 'Node server is running on port ' + app.get( 'port' ));
-});
+
 
 // catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -54,6 +51,11 @@ app.use(function(err, req, res, next) {
             error: err
         });
     }
+});
+
+// Start node server
+const server = app.listen( app.get( 'port' ), function() {
+    console.log( 'Node server is running on port ' + app.get( 'port' ));
 });
 
 module.exports = app;
