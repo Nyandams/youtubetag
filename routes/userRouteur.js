@@ -106,7 +106,7 @@ module.exports.controller = function (app, authService) {
             success: function (user) {
                 if (authService.checkPassword(req.body.password_user, user.password_user)) {
                     console.log('authenticated');
-                    var token = authService.createToken();
+                    var token = authService.createToken(user.id_user);
                     res.status(200);
                     res.cookie('youtubetag', token, {maxAge: 900000, httpOnly: true});
                     res.render('pages/home', {
