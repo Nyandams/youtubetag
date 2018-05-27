@@ -13,6 +13,8 @@
     "ejs-locals": "^1.0.2",
     "express": "~4.16.0",
     "express-myconnection": "^1.0.4",
+    "google-auth-library": "^1.5.0",
+    "googleapis": "^31.0.2",
     "html-escape": "^2.0.0",
     "http-errors": "~1.6.2",
     "jsonwebtoken": "^8.2.1",
@@ -23,6 +25,7 @@
     "pg": "^7.4.3",
     "pug": "2.0.0-beta11",
     "serve-favicon": "^2.5.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "youtube-api-v3-search": "^1.0.2"
   }
 }
