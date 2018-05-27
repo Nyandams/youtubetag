@@ -20,7 +20,8 @@ module.exports = function (pg, url) {
       };
 
       pool.query(query, (err, res) => {
-        if (err) {
+          done();
+          if (err) {
           console.log(err.stack);
           callback.fail(err);
         } else if(res.rowCount == 0) {
@@ -46,7 +47,8 @@ module.exports = function (pg, url) {
       };
 
       pool.query(query, (err, res) => {
-        if (err) {
+          done();
+          if (err) {
           console.log(err.stack);
           callback.fail(err);
         } else if(res.rowCount == 0) {
@@ -72,7 +74,8 @@ module.exports = function (pg, url) {
       };
 
       pool.query(query, (err, res) => {
-        if (err) {
+          done();
+          if (err) {
 
           console.log(err.stack);
           callback.fail(err);
@@ -101,6 +104,7 @@ module.exports = function (pg, url) {
 
 
             pool.query(query, (err, res) => {
+                done();
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
@@ -126,6 +130,7 @@ module.exports = function (pg, url) {
             };
 
             pool.query(query, (err, res) => {
+                done();
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
