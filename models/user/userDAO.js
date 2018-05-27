@@ -1,4 +1,4 @@
-const user = require('./user.js');
+const User = require('./user.js');
 
 module.exports = function (pg, url) {
   var module = {};
@@ -24,10 +24,10 @@ module.exports = function (pg, url) {
           console.log(err.stack);
           callback.fail(err);
         } else if(res.rowCount == 0) {
-          console.log(res.rows[0]);
+            console.log('fail');
           callback.fail(null);
         } else {
-          console.log(res);
+          console.log('success');
           user.id_user = res.rows[0].id_user;
           callback.success(user);
         }
@@ -50,8 +50,10 @@ module.exports = function (pg, url) {
           console.log(err.stack);
           callback.fail(err);
         } else if(res.rowCount == 0) {
+            console.log('fail');
           callback.fail(null);
         } else {
+            console.log('success');
             var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
             callback.success(user);
         }
@@ -60,7 +62,7 @@ module.exports = function (pg, url) {
   };
 
   //callback succeed(rows) if an user with email exist
-  module.getByPseudo = function (email, callback) {
+  module.getByPseudo = function (pseudo, callback) {
     console.log('______getByEmail______');
     pool.connect(function (err, client, done) {
       var query = {
@@ -71,11 +73,14 @@ module.exports = function (pg, url) {
 
       pool.query(query, (err, res) => {
         if (err) {
+
           console.log(err.stack);
           callback.fail(err);
         } else if(res.rowCount == 0) {
+            console.log('fail');
           callback.fail(null);
         } else {
+            console.log('success');
             var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
             callback.success(user);
         }
@@ -83,6 +88,33 @@ module.exports = function (pg, url) {
     });
   };
 
+
+    //callback succeed(rows) if an user with email exist
+    module.getByEmail = function (email, callback) {
+        console.log('______getByEmail______');
+        pool.connect(function (err, client, done) {
+            var query = {
+                name: 'fetch-by-email',
+                text: 'SELECT * FROM public.user WHERE email_user = $1',
+                values: [email]
+            };
+
+
+            pool.query(query, (err, res) => {
+                if (err) {
+                    console.log(err.stack);
+                    callback.fail(err);
+                } else if(res.rowCount == 0) {
+                    console.log('fail');
+                    callback.fail(null);
+                } else {
+                    console.log('success');
+                    var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
+                    callback.success(user);
+                }
+            })
+        });
+    };
     //callback succeed(rows) if an user with email exist
     module.getById = function (id, callback) {
         console.log('______getById______');
@@ -98,8 +130,10 @@ module.exports = function (pg, url) {
                     console.log(err.stack);
                     callback.fail(err);
                 } else if(res.rowCount == 0) {
+                    console.log('fail');
                     callback.fail(null);
                 } else {
+                    console.log('success');
                     var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
                     callback.success(user);
                 }

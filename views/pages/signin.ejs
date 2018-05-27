@@ -1,0 +1,21 @@
+<% layout('layout') -%>
+<% if (locals.status) { %>
+<div class="alert alert-warning" role="alert">
+  wrong password or email !
+</div>
+<% } %>
+<div class="container center_div">
+    <form method="post" action="/user/signin">
+      <div class="form-group">
+        <label for="email_user">Email address</label>
+        <input type="email" class="form-control" id="email_user" aria-describedby="emailHelp" placeholder="Enter email" name="email_user">
+      </div>
+      <div class="form-group">
+        <label for="password_user">Password</label>
+        <input type="password" class="form-control" id="password_user" placeholder="Password" name="password_user">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Log in</button>
+      <p>You doesn't have an account? <a href="/user/signup">Sign up</a></p>
+    </form>
+</div>

@@ -1,12 +1,24 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
-
 .navbar{
-  background-color: #f44336;
+  background-color: #f44336 !important;
+    color: whitesmoke !important;
 }
+
+.navbar-brand, .nav-item{
+  color: white !important;
+}
+
+.center_div{
+    padding-top: 15px;
+    margin: 0 auto;
+    width:30% /* value of your choice which suits your alignment */
+}
+
+.btn{
+    background-color: #f44336 !important;
+    border-color: firebrick;
+}
+
+.btn-primary:hover{
+    border-color: firebrick;
+}
+

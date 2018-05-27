@@ -1,0 +1,28 @@
+<% layout('layout') -%>
+
+<% if (locals.status == false) { %>
+<div class="alert alert-warning" role="alert">
+    This email or nickname is already used
+</div>
+<% } %>
+
+<div class="container center_div">
+    <form data-toggle="validator" method="post" action="/user/signup">
+        <div class="form-group">
+            <label for="email_user">Email address</label>
+            <input type="email" class="form-control" id="email_user" aria-describedby="emailHelp" placeholder="Enter email" name="email_user">
+        </div>
+        <div class="form-group">
+            <label for="pseudo_user">Nickname</label>
+            <input type="pseudo" class="form-control" id="Pseudo_user" placeholder="Enter a Nickname" name="pseudo_user">
+        </div>
+
+       <div class="form-group">
+            <label for="password_user">Password</label>
+            <input type="password" class="form-control" id="password_user" placeholder="Password" name="password_user">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create an account</button>
+        <p>Already have an account? <a href="/user/signin">Sign in</a></p>
+    </form>
+</div>

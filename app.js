@@ -21,14 +21,15 @@ app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/favicon.jpg'));
-// router
-const router = require('./routes/mainRouteur');
-// routes
 
-app.use('*',router);
+require('./routes/userRouteur').controller(app);
+require('./routes/homeRouteur').controller(app);
 
-//récup
-app.set( 'port', process.env.PORT);
+
+
+
+
+
 
 
 
@@ -41,7 +42,7 @@ app.use(function(req, res, next) {
 
 // error handling
 app.use(function(err, req, res, next) {
-    console.log('Erreur : \n' + err);
+    console.log('______________error 404_____________');
     if(err.status == 404) {
         res.render('pages/404', {
             title: 'Erreur', error: err
@@ -54,6 +55,10 @@ app.use(function(err, req, res, next) {
         });
     }
 });
+
+
+//récupération du port
+app.set( 'port', process.env.PORT);
 
 // Start node server
 const server = app.listen( app.get( 'port' ), function() {

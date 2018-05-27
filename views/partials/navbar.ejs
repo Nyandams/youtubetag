@@ -1,25 +1,23 @@
-<nav class="navbar navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand">YoutubeTag</a>
-        </div>
-        <form class="form-inline navbar-left my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="top-navbar-1">
-            <ul class="nav navbar-nav navbar-right">
-                <% if (authenticated) { %>
-                    <li><a href="#"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
-                    <li><a>Pseudo</a></li>
-                <% } else { %>
-                    <li><a href="#"> <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a></li>
-                <% } %>
-            </ul>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/">YoutubeTag</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="#">Find a Youtuber</a>
+            <a class="nav-item nav-link" href="#">Search with Tags</a>
+            <% if (locals.authenticated == true) { %>
+            <a class="nav-item nav-link" href="#">Tags interface</a>
+            <% } %>
+
+            <% if (locals.authenticated == true) { %>
+            <a class="nav-item nav-link" href="#"> Profil</a>
+            <% } else { %>
+            <a class="nav-item nav-link" href="/user/signin"> Log in </a>
+            <% } %>
 
         </div>
     </div>
 </nav>
-
-<br>
