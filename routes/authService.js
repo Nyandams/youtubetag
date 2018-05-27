@@ -1,9 +1,5 @@
-module.exports = function(){
-  const bcrypt = require('bcryptjs');
-  const uuidv4 = require('uuid/v4');
-  const jwt = require('jsonwebtoken');
+module.exports = function(randomSecretKey, bcrypt, jwt){
 
-  const randomSecretKey = uuidv4();
 
   const module = {};
 
@@ -31,7 +27,7 @@ module.exports = function(){
 
   //return true if hash(plainPassword) == password
   module.checkPassword = function (plainPassword, password) {
-    return bcrypt.compareSync(password, plainPassword)
+    return bcrypt.compareSync(plainPassword, password)
   };
 
   // return the jsonWebToken as string

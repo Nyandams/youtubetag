@@ -22,16 +22,19 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/favicon.jpg'));
 
-require('./routes/userRouteur').controller(app);
-require('./routes/homeRouteur').controller(app);
 
 
+//authentification service
+const bcrypt = require('bcryptjs');
+const uuidv4 = require('uuid/v4');
+const jwt = require('jsonwebtoken');
+
+const randomSecretKey = uuidv4();
+var authService = require('./routes/authService')(randomSecretKey, bcrypt, jwt);
 
 
-
-
-
-
+require('./routes/userRouteur').controller(app, authService);
+require('./routes/homeRouteur').controller(app, authService);
 
 // catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -42,13 +45,15 @@ app.use(function(req, res, next) {
 
 // error handling
 app.use(function(err, req, res, next) {
-    console.log('______________error 404_____________');
+
     if(err.status == 404) {
+        console.log('______________error 404_____________');
         res.render('pages/404', {
             title: 'Erreur', error: err
         });
     }
     else {
+        console.log('______________error_____________');
         res.render('pages/error', {
             title: 'Erreur',
             error: err

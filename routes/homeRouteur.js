@@ -1,8 +1,5 @@
-module.exports.controller = function (app) {
+module.exports.controller = function (app, authService) {
 
-
-//authentifications method
-    const authService = require('./authService');
 
 //BD
     const pg = require('pg');
@@ -15,8 +12,7 @@ module.exports.controller = function (app) {
 //accueil
     app.get('/', function (req, res) {
         console.log('home');
-
-        authService().authenticate(req, {
+        authService.authenticate(req, {
             success: function (id) {
                 console.log(req);
                 userDAO.getById(id, {
@@ -29,12 +25,14 @@ module.exports.controller = function (app) {
                         });
                     },
                     fail: function (err) {
+                        console.log('getbyid home fail');
                         res.render('pages/error', {locals:{error: err, title: error}});
                     }
                 });
             },
 
             fail: function () {
+                console.log('home deconnecté');
                 res.status(200);
                 res.render('pages/home', {locals: {title: 'YoutubeTag', authenticated: false}});
             }

@@ -1,7 +1,5 @@
-module.exports.controller = function (app) {
+module.exports.controller = function (app, authService) {
     const escape = require("html-escape");
-//authentication service
-    const authService = require('./authService');
 
 //recup BD
     const pg = require('pg');
@@ -15,7 +13,7 @@ module.exports.controller = function (app) {
 //get signup page
     app.get('/user/signup', function (req, res) {
         console.log('______________get signup________________');
-        authService().authenticate(req, {
+        authService.authenticate(req, {
             success: function (idUser) {
                 UserDAO.getById(idUser, {
                     success: function () {
@@ -38,7 +36,7 @@ module.exports.controller = function (app) {
 
 //get signin page
     app.get('/user/signin', function (req, res) {
-        authService().authenticate(req, {
+        authService.authenticate(req, {
             success: function (idUser) {
                 res.render('pages/home', {locals: {title: 'YoutubeTag', authenticated: true}})
             },
@@ -54,13 +52,13 @@ module.exports.controller = function (app) {
     app.post('/user/signup', function (req, res) {
         console.log('signup');
 
-        const user = new User(null, escape(req.body.pseudo_user), authService().hashPassword(req.body.password_user), escape(req.body.email_user), false, null);
+        const user = new User(null, escape(req.body.pseudo_user), authService.hashPassword(req.body.password_user), escape(req.body.email_user), false, null);
         UserDAO.getByEmailPseudo(user.pseudo_user, user.email_user, {
             fail: function () {
                 UserDAO.create(user, {
                     success: function (savedUser) {
                         console.log("account created");
-                        var token = authService().createToken(savedUser.id_user);
+                        var token = authService.createToken(savedUser.id_user);
                         res.cookie('youtubetag', token, {maxAge: 900000, httpOnly: true});
                         res.status(201);
                         res.render('pages/home', {
@@ -96,13 +94,19 @@ module.exports.controller = function (app) {
 
     });
 
+    //signout
+    app.get('/user/signout', function(req, res) {
+        res.clearCookie('youtubetag');
+        res.redirect('/');
+    });
+
     app.post('/user/signin', function (req, res) {
         console.log('signin');
         UserDAO.getByEmail(req.body.email_user, {
             success: function (user) {
-                if (authService().checkPassword(req.body.password_user, user.password_user)) {
+                if (authService.checkPassword(req.body.password_user, user.password_user)) {
                     console.log('authenticated');
-                    var token = authService().createToken();
+                    var token = authService.createToken();
                     res.status(200);
                     res.cookie('youtubetag', token, {maxAge: 900000, httpOnly: true});
                     res.render('pages/home', {
