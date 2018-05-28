@@ -6,16 +6,26 @@
     </form>
 </div>
 
-<div>
+<div class="list-group">
     <% if(locals.channels != undefined) { %>
     <% locals.channels.forEach(function(channel) { %>
-    <div>
-        <p> <%= channel.channelId %></p>
-        <p> <%= channel.title %></p>
-        <p> <%= channel.description %> </p>
-        <p> <%= channel.thumbnail %></p>
-    </div>
-    <br>
+
+    <a href="/channel/<%= channel.channelId %>" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="row">
+            <img class="col-sm-1" src="<%= channel.thumbnail %>"> </img>
+            <div class="col-sm-11">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"> <%= channel.title %> </h5>
+
+
+                </div>
+                <p class="mb-1"> <%= channel.description %> </p>
+                <small class="text-muted"><span class="badge badge-secondary">tag1</span></small>
+                <small class="text-muted"><span class="badge badge-secondary">tag2</span></small>
+                <small class="text-muted"><span class="badge badge-secondary">tag3</span></small>
+            </div>
+        </div>
+    </a>
     <% }) %>
     <% } %>
 </div>

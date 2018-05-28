@@ -22,7 +22,14 @@
     border-color: red;
 }
 
+div.list-group{
+    margin-top: 15px;
+}
+a.list-group-item{
+    width: 90%;
+    margin-left: 5%;
 
+}
 
 @media screen and (max-width: 536px) {
     .center_div {
