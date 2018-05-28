@@ -1,6 +1,8 @@
 module.exports = function() {
     const YtChannel = require('../models/ytChannel/ytChannel');
     const YouTube = require('youtube-node');
+    const simpleYoutube = require('simple-youtube-api');
+    const simpleAPI = new simpleYoutube('AIzaSyCc_SHX_DcowckZkccEfjIxQ3uOzW9k9Pw');
 
     const module ={};
 
@@ -9,9 +11,24 @@ module.exports = function() {
     youTube.setKey('AIzaSyCc_SHX_DcowckZkccEfjIxQ3uOzW9k9Pw');
 
 
+    module.ytChannel = function(channelId, callback){
+
+        var ytChannel = 'https://www.youtube.com/channel/' + channelId;
+        console.log(ytChannel);
+        simpleAPI.getChannel(ytChannel)
+            .then(results => {
+
+                let ytChannel = new YtChannel(results.raw.id, results.raw.snippet.title, results.raw.snippet.description, results.raw.snippet.thumbnails.default.url);
+                callback.success(ytChannel);
+            })
+            .catch(function(error){
+                console.log(error);
+                callback.fail(error);
+            });
+    };
+
     module.ytSearch = function(search, callback){
-
-
+        console.log('ytSearch');
         youTube.search(search, 25, {type: 'channel', part: 'snippet'}, function (error, result) {
             if (error) {
                 console.log(error);

@@ -32,7 +32,7 @@ const jwt = require('jsonwebtoken');
 const randomSecretKey = uuidv4();
 var authService = require('./routes/authService')(randomSecretKey, bcrypt, jwt);
 
-
+require('./routes/youtubeRouteur').controller(app, authService);
 require('./routes/userRouteur').controller(app, authService);
 require('./routes/homeRouteur').controller(app, authService);
 
