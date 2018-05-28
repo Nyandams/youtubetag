@@ -1,1 +1,21 @@
-<% layout('layout') -%>
+<% layout('layout') %>
+<div class="center_div">
+    <form class="form-inline" method="post" action="/search">
+        <input type="text" class="form-control" id="search" name="search" placeholder="Search a youtuber">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<div>
+    <% if(locals.channels != undefined) { %>
+    <% locals.channels.forEach(function(channel) { %>
+    <div>
+        <p> <%= channel.channelId %></p>
+        <p> <%= channel.title %></p>
+        <p> <%= channel.description %> </p>
+        <p> <%= channel.thumbnail %></p>
+    </div>
+    <br>
+    <% }) %>
+    <% } %>
+</div>

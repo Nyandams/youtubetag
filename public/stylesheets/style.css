@@ -15,10 +15,10 @@
 
 .btn{
     background-color: #f44336 !important;
-    border-color: firebrick;
+    border-color: red;
 }
 
 .btn-primary:hover{
-    border-color: firebrick;
+    border-color: red;
 }
 

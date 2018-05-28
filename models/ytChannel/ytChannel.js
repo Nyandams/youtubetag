@@ -5,4 +5,4 @@ function YtChannel(channelId, title, description, thumbnail) {
         this.thumbnail  = thumbnail
 };
 
-module.exports = User;
+module.exports = YtChannel;

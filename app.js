@@ -48,16 +48,18 @@ app.use(function(err, req, res, next) {
 
     if(err.status == 404) {
         console.log('______________error 404_____________');
-        res.render('pages/404', {
+
+        res.render('pages/404', {locals: {
             title: 'Erreur', error: err
-        });
+        }});
     }
     else {
         console.log('______________error_____________');
-        res.render('pages/error', {
+        console.log(err);
+        res.render('pages/error', {locals:{
             title: 'Erreur',
             error: err
-        });
+        }});
     }
 });
 
