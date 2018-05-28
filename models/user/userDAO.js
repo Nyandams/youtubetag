@@ -56,7 +56,7 @@ module.exports = function (pg, url) {
           callback.fail(null);
         } else {
             console.log('success');
-            var user = new User(res.rows[0].id_user, res.rows[0].pseudo_user, res.rows[0].password_user, res.rows[0].email_user, res.rows[0].is_admin_user, res.rows[0].date_inscription_user);
+            var user = new tag(res.rows[0].id_tag, res.rows[0].libelle_tag);
             callback.success(user);
         }
       })

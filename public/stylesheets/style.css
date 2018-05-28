@@ -13,6 +13,20 @@
     width: 30% /* value of your choice which suits your alignment */
 }
 
+.center_div_channel{
+    padding-top: 15px;
+    margin: auto;
+    width: 80% /* value of your choice which suits your alignment */
+}
+
+h5.text-muted{
+    margin: 1%;
+}
+
+.channel_title{
+    text-align: center;
+}
+
 .center_form{
     width: 80%;
     margin: auto;
