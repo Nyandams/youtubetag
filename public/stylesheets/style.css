@@ -14,7 +14,7 @@
 }
 
 .center_form{
-    width: 100%;
+    width: 80%;
     margin: auto;
 }
 .btn{
@@ -32,6 +32,7 @@ div.list-group{
 a.list-group-item{
     width: 90%;
     margin-left: 5%;
+    margin-top: 0.3%;
 
 }
 
@@ -45,7 +46,7 @@ a.list-group-item{
     }
 }
 
-@media screen and (min-width: 536px) and (max-width: 990px) {
+@media screen and (min-width: 536px) and (max-width: 1246px) {
     #search{
         width: 100%;
     }
