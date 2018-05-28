@@ -22,3 +22,24 @@
     border-color: red;
 }
 
+
+
+@media screen and (max-width: 536px) {
+    .center_div {
+        width: 97%;
+    }
+    .btn-search{
+        width: 95%;
+        margin: 2%;
+    }
+}
+
+@media screen and (min-width: 536px) and (max-width: 990px) {
+    #search{
+        width: 100%;
+    }
+    .btn-search{
+        width: 99%;
+        margin: 2%;
+    }
+}

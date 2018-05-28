@@ -2,7 +2,7 @@ module.exports.controller = function (app, authService) {
     //routeur de l'accueil + recherche de youtuber
 
     //youtubeService
-    const ytService = require('./ytService2');
+    const ytService = require('./ytService');
 
 //BD
     const pg = require('pg');
