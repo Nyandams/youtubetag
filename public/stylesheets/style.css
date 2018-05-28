@@ -9,10 +9,14 @@
 
 .center_div{
     padding-top: 15px;
-    margin: 0 auto;
-    width:30% /* value of your choice which suits your alignment */
+    margin: auto;
+    width: 30% /* value of your choice which suits your alignment */
 }
 
+.center_form{
+    width: 100%;
+    margin: auto;
+}
 .btn{
     background-color: #f44336 !important;
     border-color: red;
