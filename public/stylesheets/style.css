@@ -23,6 +23,14 @@ h5.text-muted{
     margin: 1%;
 }
 
+img.col-xl-2.col-md-4{
+    height: 100%;
+}
+
+div.col-xl10.col-md-8{
+    height: 100%;
+}
+
 .channel_title{
     text-align: center;
 }
