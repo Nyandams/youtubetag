@@ -1,5 +1,43 @@
 <% layout('layout') %>
 
+
+
+
+
+
+<div class="center_addTag">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAddLibelle">
+        Add a Tag
+    </button>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalAddLibelle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add a Tag</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form data-toggle="validator" method="post" action="/tag/add">
+                    <div class="form-group">
+                        <label for="libelle_tag">Tag name</label>
+                        <input type="text" class="form-control" id="libelle_tag" placeholder="tag name" name="libelle_tag">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <div class="row center_div_channel">
     <% for(let i = 0; i<locals.tags.length; i++){ %>
 
@@ -22,11 +60,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <div class="form-group">
+                        <label for="labelTag_<%= locals.tags[i].id_tag %>">Tag name</label>
+                        <input type="text" class="form-control" id="tag<%= locals.tags[i].id_tag %>" placeholder="tag name" value="<%= locals.tags[i].libelle_tag %>">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="deleteTag" type="button" class="btn btn-secondary" onclick="deleteTag(<%= locals.tags[i].id_tag %>)">Delete</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" onclick="updateTag(<%= locals.tags[i].id_tag %>)">Save changes</button>
                 </div>
             </div>
         </div>
@@ -49,8 +90,30 @@
             }
 
             xhr.send(null);
+        }
 
+        //updateTag
+        function updateTag(idTag){
+            // Update a user
+            var url = "/tag/update";
 
+            var data = {};
+            data.id_tag      = idTag;
+            data.libelle_tag = document.getElementById('tag'+idTag).value;
+
+            var json = JSON.stringify(data);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+            xhr.onreadystatechange = function() { // listen for state changes
+                if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+                    console.log('redirect');
+                    window.location.replace('/tags');
+                }
+            }
+            xhr.send(json);
         }
 
     </script>

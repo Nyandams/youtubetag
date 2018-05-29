@@ -1,6 +1,6 @@
 module.exports.controller = function (app, authService) {
     //routeur de l'accueil + recherche de youtuber
-
+    const escape = require("html-escape");
 //BD
     const pg = require('pg');
     const url = process.env.DATABASE_URL;
@@ -10,7 +10,97 @@ module.exports.controller = function (app, authService) {
     const tagDAO = require('../models/tag/tagDAO')(pg, url);
     const userDAO = require('../models/user/userDAO')(pg, url);
 
-    //suppression d'un
+
+    // create a tag
+    app.post('/tag/add', function(req, res){
+        console.log('____add tag______');
+        let tag = new Tag(null, escape(req.body.libelle_tag));
+        authService.authenticate(req, {
+            success: function (id) {
+                console.log('connecté');
+                userDAO.getById(id, {
+                    success: function (user) {
+                        if (user.is_admin_user) {
+                            tagDAO.create(tag, {
+                                success: function (tagSaved) {
+                                    console.log('add success');
+                                    res.status(201);
+                                    res.redirect('/tags');
+                                },
+                                fail: function (err) {
+                                    console.log('add tag fail');
+                                    res.status(500);
+                                    res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
+                                }
+                            });
+                        } else {
+                            console.log('access forbidden');
+                            res.status(403);
+                            res.render('pages/403', {locals: {title: 'error 403', authenticated: true}});
+                        }
+                    },
+                    fail: function (err) {
+                        console.log('getbyid tags fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: err, title: error}});
+                    }
+                })
+            },
+            fail: function (error) {
+                console.log('deconnecté')
+                console.log('non connecté');
+                res.status(403);
+                res.render('pages/403', {locals: {title: 'error 403'}});
+            }
+        })
+    });
+
+    // update a tag
+    app.put('/tag/update', function(req, res){
+        console.log('____update tag______');
+        let tag = new Tag(escape(req.body.id_tag), escape(req.body.libelle_tag));
+        authService.authenticate(req, {
+            success: function (id) {
+                console.log('connecté');
+                userDAO.getById(id, {
+                    success: function (user) {
+                        if (user.is_admin_user) {
+                            tagDAO.update(tag, {
+                                success: function (tagUpdated) {
+                                    console.log('update success');
+                                    res.status(200);
+                                    res.redirect('/tags');
+                                },
+                                fail: function (err) {
+                                    console.log('update tag fail');
+                                    res.status(500);
+                                    res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
+                                }
+                            });
+                        } else {
+                            console.log('access forbidden');
+                            res.status(403);
+                            res.render('pages/403', {locals: {title: 'error 403', authenticated: true}});
+                        }
+                    },
+                    fail: function (err) {
+                        console.log('getbyid tags fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: err, title: error}});
+                    }
+                })
+            },
+            fail: function (error) {
+                console.log('deconnecté')
+                console.log('non connecté');
+                res.status(403);
+                res.render('pages/403', {locals: {title: 'error 403'}});
+            }
+        })
+    });
+
+
+    //suppression d'un tag
     app.delete('/tag/delete/:id', function (req, res) {
         console.log('_______delete______');
         authService.authenticate(req, {

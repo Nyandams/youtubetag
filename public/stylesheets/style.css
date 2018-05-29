@@ -13,6 +13,13 @@
     width: 30% /* value of your choice which suits your alignment */
 }
 
+.center_addTag{
+    padding-top: 15px;
+    margin: auto;
+    width: 7%; /* value of your choice which suits your alignment */
+    margin-bottom: 10px;
+}
+
 .center_div_channel{
     padding-top: 15px;
     margin: auto;

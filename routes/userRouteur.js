@@ -59,7 +59,7 @@ module.exports.controller = function (app, authService) {
                     success: function (savedUser) {
                         console.log("account created");
                         var token = authService.createToken(savedUser.id_user);
-                        res.cookie('youtubetag', token, {maxAge: 900000, httpOnly: true});
+                        res.cookie('youtubetag', token, {expires: new Date(Date.now()+900000), httpOnly: true});
                         res.status(201);
                         res.render('pages/home', {
                             locals: {
@@ -108,7 +108,7 @@ module.exports.controller = function (app, authService) {
                     console.log('authenticated');
                     var token = authService.createToken(user.id_user);
                     res.status(200);
-                    res.cookie('youtubetag', token, {maxAge: 900000, httpOnly: true});
+                    res.cookie('youtubetag', token, {expires: new Date(Date.now()+900000), httpOnly: true});
                     res.render('pages/home', {
                         locals: {
                             title: 'YoutubeTag',
