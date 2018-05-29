@@ -21,6 +21,8 @@ module.exports = function (pg, url) {
 
       pool.query(query, (err, res) => {
           done();
+          pool.end().then(() => console.log('pool has ended'));
+
           if (err) {
           console.log(err.stack);
           callback.fail(err);
@@ -48,6 +50,8 @@ module.exports = function (pg, url) {
 
       pool.query(query, (err, res) => {
           done();
+          pool.end().then(() => console.log('pool has ended'));
+
           if (err) {
           console.log(err.stack);
           callback.fail(err);
@@ -75,6 +79,8 @@ module.exports = function (pg, url) {
 
       pool.query(query, (err, res) => {
           done();
+          pool.end().then(() => console.log('pool has ended'));
+
           if (err) {
 
           console.log(err.stack);
@@ -96,6 +102,10 @@ module.exports = function (pg, url) {
     module.getByEmail = function (email, callback) {
         console.log('______getByEmail______');
         pool.connect(function (err, client, done) {
+            if (err) {
+                return console.error('Error acquiring client', err.stack)
+            }
+
             var query = {
                 name: 'fetch-by-email',
                 text: 'SELECT * FROM public.user WHERE email_user = $1',
@@ -105,6 +115,9 @@ module.exports = function (pg, url) {
 
             pool.query(query, (err, res) => {
                 done();
+                pool.end().then(() => console.log('pool has ended'));
+
+
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
@@ -119,6 +132,8 @@ module.exports = function (pg, url) {
             })
         });
     };
+
+
     //callback succeed(rows) if an user with email exist
     module.getById = function (id, callback) {
         console.log('______getById______');
@@ -131,6 +146,7 @@ module.exports = function (pg, url) {
 
             pool.query(query, (err, res) => {
                 done();
+                pool.end().then(() => console.log('pool has ended'));
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
