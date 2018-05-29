@@ -7,8 +7,8 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="#">Search with Tags</a>
-            <% if (locals.authenticated == true) { %>
-            <a class="nav-item nav-link" href="#">Tags interface</a>
+            <% if (locals.authenticated == true && locals.isadmin) { %>
+            <a class="nav-item nav-link" href="/tags">Tags interface</a>
             <% } %>
 
             <% if (locals.authenticated == true) { %>

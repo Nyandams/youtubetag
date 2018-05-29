@@ -58,6 +58,10 @@ a.list-group-item{
 
 }
 
+.tag{
+    padding: 0.5%;
+}
+
 @media screen and (max-width: 536px) {
     .center_div {
         width: 97%;

@@ -1,4 +1,4 @@
-const Tag = require('./user.js');
+const Tag = require('./tag.js');
 
 module.exports = function (pg, url) {
     var module = {};
@@ -9,6 +9,30 @@ module.exports = function (pg, url) {
         ssl: true
     });
 
+
+    module.getAll = function(callback){
+        console.log('______get_all_tag______');
+        pool.connect(function (err, client, done) {
+            var query = {
+                name: 'fetch-all-tag',
+                text: 'SELECT * FROM public.tag'
+            };
+            pool.query(query, (err, res) => {
+                done();
+                if (err) {
+                    console.log(err.stack);
+                    callback.fail(err);
+                } else if (res.rowCount == 0) {
+                    console.log('fail');
+                    callback.fail(null);
+                } else {
+                    console.log('success');
+                    console.log(res.rows);
+                    callback.success(res.rows);
+                }
+            })
+        })
+    };
 
     //create a tag
     module.create = function (tag, callback) {
@@ -57,8 +81,8 @@ module.exports = function (pg, url) {
                     callback.fail(null);
                 } else {
                     console.log('success');
-                    var user = new Tag(res.rows[0].id_tag, res.rows[0].libelle_tag);
-                    callback.success(user);
+                    var tag = new Tag(res.rows[0].id_tag, res.rows[0].libelle_tag);
+                    callback.success(tag);
                 }
             })
         });
@@ -83,8 +107,8 @@ module.exports = function (pg, url) {
                     callback.fail(null);
                 } else {
                     console.log('success');
-                    var user = new Tag(res.rows[0].id_tag, res.rows[0].libelle_tag);
-                    callback.success(user);
+                    var tag = new Tag(res.rows[0].id_tag, res.rows[0].libelle_tag);
+                    callback.success(tag);
                 }
             })
         });
@@ -97,7 +121,7 @@ module.exports = function (pg, url) {
             var query = {
                 name: 'delete-tag',
                 text: 'DELETE FROM public.tag WHERE id_tag=$1',
-                values: [tag.id_tag]
+                values: [id]
             };
             pool.query(query, (err, res) => {
                 done();

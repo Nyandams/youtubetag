@@ -29,6 +29,7 @@ module.exports.controller = function (app, authService) {
                     },
                     fail: function (err) {
                         console.log('getbyid home fail');
+                        res.status(500);
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
                 });

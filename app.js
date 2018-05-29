@@ -32,6 +32,7 @@ const jwt = require('jsonwebtoken');
 const randomSecretKey = uuidv4();
 var authService = require('./routes/authService')(randomSecretKey, bcrypt, jwt);
 
+require('./routes/tagsRouteur').controller(app, authService);
 require('./routes/youtubeRouteur').controller(app, authService);
 require('./routes/userRouteur').controller(app, authService);
 require('./routes/homeRouteur').controller(app, authService);
@@ -47,6 +48,10 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
 
     if(err.status == 404) {
+        const { method, url } = req;
+
+        console.log(method);
+        console.log(url);
         console.log('______________error 404_____________');
 
         res.render('pages/404', {locals: {
