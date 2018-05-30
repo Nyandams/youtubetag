@@ -19,7 +19,7 @@ module.exports = function (pg, url) {
         values: [user.pseudo_user, user.password_user, user.email_user, false]
       };
 
-        client.query(query, (err, res) => {
+        pool.query(query, (err, res) => {
           done();
           client.end().then(()=>console.log('disconnected'))
               .catch();
@@ -49,7 +49,7 @@ module.exports = function (pg, url) {
         values: [pseudo, email]
       };
 
-        client.query(query, (err, res) => {
+        pool.query(query, (err, res) => {
           done();
           client.end().then(()=>console.log('disconnected'))
               .catch();
@@ -79,7 +79,7 @@ module.exports = function (pg, url) {
         values: [pseudo]
       };
 
-        client.query(query, (err, res) => {
+        pool.query(query, (err, res) => {
           done();
           client.end().then(()=>console.log('disconnected'))
               .catch();
@@ -116,7 +116,7 @@ module.exports = function (pg, url) {
             };
 
 
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();
@@ -147,7 +147,7 @@ module.exports = function (pg, url) {
                 values: [id]
             };
 
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();

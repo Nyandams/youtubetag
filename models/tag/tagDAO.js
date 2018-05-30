@@ -17,7 +17,7 @@ module.exports = function (pg, url) {
                 name: 'fetch-all-tag',
                 text: 'SELECT * FROM public.tag'
             };
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();client.end().then(()=>console.log('disconnected'))
                     .catch();
                 if (err) {
@@ -45,7 +45,7 @@ module.exports = function (pg, url) {
                 values: [tag.libelle_tag]
             };
 
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();
@@ -75,7 +75,7 @@ module.exports = function (pg, url) {
                 text: 'SELECT * FROM public.tag WHERE id_tag = $1',
                 values: [id_tag]
             };
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();
@@ -104,7 +104,7 @@ module.exports = function (pg, url) {
                 text: 'UPDATE public.tag SET libelle_tag=$1 WHERE id_tag=$2 RETURNING *',
                 values: [tag.libelle_tag, tag.id_tag]
             };
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();
@@ -133,7 +133,7 @@ module.exports = function (pg, url) {
                 text: 'DELETE FROM public.tag WHERE id_tag=$1',
                 values: [id]
             };
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();

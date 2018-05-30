@@ -22,7 +22,7 @@ module.exports = function() {
                 callback.success(ytChannel);
             })
             .catch(function(error){
-                console.log(error);
+                console.log('________error  ytChannel api simple-youtube-api____________');
                 callback.fail(error);
             });
     };

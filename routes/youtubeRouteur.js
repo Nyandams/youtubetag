@@ -190,16 +190,16 @@ module.exports.controller = function (app, authService) {
                 userDAO.getById(id, {
                     success: function (user) {
 
-                        let comment = new Comment(null, user.pseudo, escape(req.body.content), req.params.channelId);
+                        let comment = new Comment(null, user.pseudo_user, escape(req.body.content), req.params.channelId);
                         commentDAO.create(comment, {
                             success: function (commentCreated) {
                                 res.status(401);
-                                res.redirect('/channel' + req.params.channelId);
+                                res.redirect('/channel/' + req.params.channelId);
                             },
-                            fail: function () {
+                            fail: function (err) {
                                 console.log('getbyid tags fail');
                                 res.status(500);
-                                res.render('pages/error', {locals: {error: err, title: error}});
+                                res.render('pages/error', {locals: {error: err, title: err}});
                             }
                         });
                     },

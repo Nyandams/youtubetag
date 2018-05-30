@@ -17,11 +17,11 @@ module.exports = function (pg, url) {
         pool.connect(function (err, client, done) {
             var query = {
                 name: 'create-comment',
-                text: 'INSERT INTO public.tag (pseudo_user, content, channel_id) VALUES ($1,$2,$3) RETURNING *',
-                values: [comment.pseudo_user, comment.content, comment.channel_id]
+                text: 'INSERT INTO public.comment (content, channel_id, pseudo_user) VALUES ($1,$2,$3) RETURNING *',
+                values: [comment.content, comment.channel_id, comment.pseudo_user]
             };
 
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();
@@ -51,7 +51,7 @@ module.exports = function (pg, url) {
                 text: 'SELECT * FROM public.comment WHERE channel_id = $1 ORDER BY id_comment DESC',
                 values: [channel_id]
             };
-            client.query(query, (err, res) => {
+            pool.query(query, (err, res) => {
                 done();
                 client.end().then(()=>console.log('disconnected'))
                     .catch();

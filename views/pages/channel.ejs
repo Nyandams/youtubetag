@@ -22,20 +22,27 @@
 <div class="center_div_channel tags"></div>
 
 
-<% if( locals.authenticated ){ %>
+
 <div class="center_div_channel commentaire">
-    <form data-toggle="validator" method="post" action="/comment/add/<%= channel.channelId %>">
-        <div class="form-group">
-            <label for="content">Tag name</label>
-            <input type="textarea" class="form-control" id="content" placeholder="Comment" name="content">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <% if( locals.authenticated ){ %>
+        <form data-toggle="validator" method="post" action="/comment/add/<%= channel.channelId %>">
+            <div class="form-group">
+                <label for="content">Give your opinion</label>
+                <input type="textarea" class="form-control" id="content" placeholder="Comment" name="content">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    <% } %>
 
-
+    <h2>Recent Opinions</h2>
 <% for(let i = 0; i<comments.length && i<10; i++){ %>
-    <h1><%= comments[i].pseudo_user %></h1>
-    <p><%= comments[i].content %></p>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><%= comments[i].pseudo_user %></h5>
+            <p class="card-text"><%= comments[i].content %></p>
+
+        </div>
+    </div>
 <% }%>
 </div>
-<% } %>
