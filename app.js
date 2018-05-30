@@ -36,6 +36,7 @@ require('./routes/tagsRouteur').controller(app, authService);
 require('./routes/youtubeRouteur').controller(app, authService);
 require('./routes/userRouteur').controller(app, authService);
 require('./routes/homeRouteur').controller(app, authService);
+require('./routes/tagLinkRouteur').controller(app, authService);
 
 // catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

@@ -19,7 +19,26 @@
     </div>
 </div>
 
-<div class="center_div_channel tags"></div>
+
+<% if( locals.authenticated) {%>
+<div class="center_div_channel tags">
+    <form class="input-group col-sm-2" method="post" action="/channel/tag/add/<%= locals.channel.channelId %>">
+        <select class="custom-select" id="tag_link" name="id_tag">
+            <option selected>Add a tag</option>
+            <% if (locals.tags != undefined){ %>
+                <% for(let i=0; i<locals.tags.length; i++){ %>
+                <option value="<%= locals.tags[i].id_tag %>"><%= locals.tags[i].libelle_tag %></option>
+                <% } %>
+            <% } %>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Add</button>
+        </div>
+    </form>
+
+</div>
+<% }%>
+
 
 
 

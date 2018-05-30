@@ -23,9 +23,6 @@ module.exports = function (pg, url) {
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
-                } else if (res.rowCount == 0) {
-                    console.log('fail');
-                    callback.fail(null);
                 } else {
                     console.log('success');
                     console.log(res.rows);

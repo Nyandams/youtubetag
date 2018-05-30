@@ -11,6 +11,9 @@ module.exports.controller = function (app, authService) {
     const userDAO = require('../models/user/userDAO')(pg, url);
     const User = require('../models/user/user');
 
+    const tagDAO = require('../models/tag/tagDAO')(pg, url);
+    const tag    = require('../models/tag/tag');
+
     //youtubeService
     const ytService = require('./ytService');
 
@@ -24,17 +27,18 @@ module.exports.controller = function (app, authService) {
                         ytService().ytSearch(req.body.search, {
                             success: function (tabChan) {
                                 console.log(tabChan);
-
                                 console.log('appel réussi');
-                                res.status(200);
-                                res.render('pages/home', {
-                                    locals: {
-                                        title: 'Recherche : ' + req.body.search,
-                                        channels: tabChan,
-                                        authenticated: true,
-                                        isadmin: user.is_admin_user
-                                    }
-                                });
+
+                                       res.status(200);
+                                       res.render('pages/home', {
+                                           locals: {
+                                               title: 'Recherche : ' + req.body.search,
+                                               channels: tabChan,
+                                               authenticated: true,
+                                               isadmin: user.is_admin_user
+                                           }
+                                       });
+
                             },
                             fail: function (error) {
                                 console.log('search yt fail');
@@ -95,16 +99,41 @@ module.exports.controller = function (app, authService) {
                             success: function (channel) {
                                 commentDAO.getByIdChannel(req.params.channelId, {
                                     success: function (comments) {
-                                        res.status(200);
-                                        res.render('pages/channel', {
-                                            locals: {
-                                                title: channel.title,
-                                                comments: comments,
-                                                channel: channel,
-                                                authenticated: true,
-                                                isadmin: user.is_admin_user
+                                        tagDAO.getAll({
+                                            success: function (tagArray) {
+                                                res.status(200);
+                                                res.render('pages/channel', {
+                                                    locals: {
+                                                        title: channel.title,
+                                                        comments: comments,
+                                                        channel: channel,
+                                                        authenticated: true,
+                                                        tags: tagArray,
+                                                        isadmin: user.is_admin_user
+                                                    }
+                                                });
+                                            },
+                                            fail: function (error) {
+                                                console.log('getCommentByIdChannel home fail');
+                                                res.status(500);
+                                                res.render('pages/error', {
+                                                    locals: {
+                                                        error: error,
+                                                        title: error,
+                                                        authenticated: true,
+                                                        isadmin: user.is_admin_user
+                                                    }
+                                                });
                                             }
                                         });
+
+
+
+
+
+
+
+
                                     },
                                     fail: function (err) {
                                         console.log('getCommentByIdChannel home fail');
