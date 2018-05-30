@@ -45,8 +45,8 @@ module.exports.controller = function (app, authService) {
             },
             fail: function (error) {
                 console.log('non connecté');
-                res.status(403);
-                res.render('pages/403', {locals: {title: 'error 403'}});
+                res.status(401);
+                res.render('pages/401', {locals: {title: 'error 403'}});
             }
         })
     });
