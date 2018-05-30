@@ -17,8 +17,8 @@ module.exports = function (pg, url) {
         pool.connect(function (err, client, done) {
             var query = {
                 name: 'create-comment',
-                text: 'INSERT INTO public.tag (id_user, content, channel_id) VALUES ($1,$2,$3) RETURNING *',
-                values: [comment.id_user, comment.content, comment.channel_id]
+                text: 'INSERT INTO public.tag (pseudo_user, content, channel_id) VALUES ($1,$2,$3) RETURNING *',
+                values: [comment.pseudo_user, comment.content, comment.channel_id]
             };
 
             client.query(query, (err, res) => {
@@ -48,7 +48,7 @@ module.exports = function (pg, url) {
         pool.connect(function (err, client, done) {
             var query = {
                 name: 'fetch-comment-by-id-channel',
-                text: 'SELECT * FROM public.comment WHERE channel_id = $1',
+                text: 'SELECT * FROM public.comment WHERE channel_id = $1 ORDER BY id_comment DESC',
                 values: [channel_id]
             };
             client.query(query, (err, res) => {

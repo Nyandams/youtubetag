@@ -7,6 +7,7 @@ module.exports.controller = function (app, authService) {
 
     const Comment = require('../models/comment/comment');
     const commentDAO = require('../models/comment/commentDAO')(pg, url);
+
     const userDAO = require('../models/user/userDAO')(pg, url);
     const User = require('../models/user/user');
 
@@ -88,22 +89,41 @@ module.exports.controller = function (app, authService) {
             success: function (id) {
                 console.log('success connexion');
                 userDAO.getById(id, {
-
                     success: function (user) {
-                        ytService().ytChannel(req.params.channelId,{
+                        console.log('connect verif ok');
+                        ytService().ytChannel(req.params.channelId, {
                             success: function (channel) {
-                                res.status(200);
-                                res.render('pages/channel', {
-                                    locals: {
-                                        title: channel.title,
-                                        channel: channel,
-                                        authenticated: true,
-                                        isadmin: user.is_admin_user
+                                commentDAO.getByIdChannel(req.params.channelId, {
+                                    success: function (comments) {
+                                        res.status(200);
+                                        res.render('pages/channel', {
+                                            locals: {
+                                                title: channel.title,
+                                                comments: comments,
+                                                channel: channel,
+                                                authenticated: true,
+                                                isadmin: user.is_admin_user
+                                            }
+                                        });
+                                    },
+                                    fail: function (err) {
+                                        console.log('getCommentByIdChannel home fail');
+                                        res.status(500);
+                                        res.render('pages/error', {
+                                            locals: {
+                                                error: error,
+                                                title: error,
+                                                authenticated: true,
+                                                isadmin: user.is_admin_user
+                                            }
+                                        });
                                     }
                                 });
+
                             }
-                        },{
+                        }, {
                             fail: function (error) {
+                                res.status(500);
                                 res.render('pages/error', {
                                     locals: {
                                         error: error, title: error,
@@ -127,13 +147,26 @@ module.exports.controller = function (app, authService) {
                 console.log('deconnecté');
                 ytService().ytChannel(req.params.channelId, {
                     success: function (channel) {
-                        console.log(channel);
-                        console.log('appel réussi');
-                        res.status(200);
-                        res.render('pages/channel', {
-                            locals: {
-                                title: channel.title,
-                                channel: channel
+                        commentDAO.getByIdChannel(req.params.channelId, {
+                            success: function (comments) {
+                                res.status(200);
+                                res.render('pages/channel', {
+                                    locals: {
+                                        title: channel.title,
+                                        comments: comments,
+                                        channel: channel
+                                    }
+                                });
+                            },
+                            fail: function (err) {
+                                console.log('getCommentByIdChannel home fail');
+                                res.status(500);
+                                res.render('pages/error', {
+                                    locals: {
+                                        error: error,
+                                        title: error
+                                    }
+                                });
                             }
                         });
                     },
@@ -148,23 +181,20 @@ module.exports.controller = function (app, authService) {
     });
 
 
-
-
     // create a comment
-    app.post('/channel/comment/:channelId', function(req, res){
-        console.log('____add comment______');
-
+    app.post('/comment/add/:channelId', function (req, res) {
+        console.log('_____add_comment______');
         authService.authenticate(req, {
             success: function (id) {
                 console.log('connecté');
                 userDAO.getById(id, {
                     success: function (user) {
 
-                        let comment = new Comment(null, escape(id_user, req.body.content), req.params.channelId);
+                        let comment = new Comment(null, user.pseudo, escape(req.body.content), req.params.channelId);
                         commentDAO.create(comment, {
                             success: function (commentCreated) {
                                 res.status(401);
-                                res.redirect('/channel'+req.params.channelId);
+                                res.redirect('/channel' + req.params.channelId);
                             },
                             fail: function () {
                                 console.log('getbyid tags fail');
@@ -187,5 +217,6 @@ module.exports.controller = function (app, authService) {
                 res.render('pages/403', {locals: {title: 'error 403'}});
             }
         })
-    });
+
+    })
 };

@@ -19,10 +19,23 @@
     </div>
 </div>
 
-
 <div class="center_div_channel tags"></div>
 
+
+<% if( locals.authenticated ){ %>
 <div class="center_div_channel commentaire">
+    <form data-toggle="validator" method="post" action="/comment/add/<%= channel.channelId %>">
+        <div class="form-group">
+            <label for="content">Tag name</label>
+            <input type="textarea" class="form-control" id="content" placeholder="Comment" name="content">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
 
+<% for(let i = 0; i<comments.length && i<10; i++){ %>
+    <h1><%= comments[i].pseudo_user %></h1>
+    <p><%= comments[i].content %></p>
+<% }%>
 </div>
+<% } %>
