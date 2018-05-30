@@ -19,9 +19,10 @@ module.exports = function (pg, url) {
         values: [user.pseudo_user, user.password_user, user.email_user, false]
       };
 
-      pool.query(query, (err, res) => {
+        client.query(query, (err, res) => {
           done();
-          pool.end().then(() => console.log('pool has ended'));
+          client.end().then(()=>console.log('disconnected'))
+              .catch();
 
           if (err) {
           console.log(err.stack);
@@ -48,9 +49,10 @@ module.exports = function (pg, url) {
         values: [pseudo, email]
       };
 
-      pool.query(query, (err, res) => {
+        client.query(query, (err, res) => {
           done();
-          pool.end().then(() => console.log('pool has ended'));
+          client.end().then(()=>console.log('disconnected'))
+              .catch();
 
           if (err) {
           console.log(err.stack);
@@ -77,9 +79,10 @@ module.exports = function (pg, url) {
         values: [pseudo]
       };
 
-      pool.query(query, (err, res) => {
+        client.query(query, (err, res) => {
           done();
-          pool.end().then(() => console.log('pool has ended'));
+          client.end().then(()=>console.log('disconnected'))
+              .catch();
 
           if (err) {
 
@@ -113,10 +116,10 @@ module.exports = function (pg, url) {
             };
 
 
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                pool.end().then(() => console.log('pool has ended'));
-
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -144,9 +147,11 @@ module.exports = function (pg, url) {
                 values: [id]
             };
 
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                pool.end().then(() => console.log('pool has ended'));
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
+
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);

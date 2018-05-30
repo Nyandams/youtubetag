@@ -24,7 +24,7 @@ module.exports.controller = function (app, authService) {
                         res.status(404);
                         res.render('pages/404', {locals: {title: 'error 404'}});
                     }
-                })
+                });
 
             },
             fail: function () {
@@ -76,6 +76,7 @@ module.exports.controller = function (app, authService) {
                         }
                     }
                 });
+
             },
             success: function () {
                 console.log("Pseudo ou Email déjà existant dans la base de données");
@@ -126,7 +127,8 @@ module.exports.controller = function (app, authService) {
                 res.status(401);
                 res.render('pages/signin', {locals: {title: 'Sign up'}});
             }
-        })
+        });
+
 
     });
 };

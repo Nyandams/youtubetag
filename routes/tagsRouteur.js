@@ -33,6 +33,7 @@ module.exports.controller = function (app, authService) {
                                     res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
                                 }
                             });
+
                         } else {
                             console.log('access forbidden');
                             res.status(403);
@@ -44,10 +45,10 @@ module.exports.controller = function (app, authService) {
                         res.status(500);
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
-                })
+                });
+
             },
             fail: function (error) {
-                console.log('deconnecté')
                 console.log('non connecté');
                 res.status(403);
                 res.render('pages/403', {locals: {title: 'error 403'}});
@@ -77,6 +78,7 @@ module.exports.controller = function (app, authService) {
                                     res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
                                 }
                             });
+
                         } else {
                             console.log('access forbidden');
                             res.status(403);
@@ -88,7 +90,8 @@ module.exports.controller = function (app, authService) {
                         res.status(500);
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
-                })
+                });
+
             },
             fail: function (error) {
                 console.log('deconnecté')
@@ -121,6 +124,7 @@ module.exports.controller = function (app, authService) {
                                     res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
                                 }
                             });
+
                         } else {
                             console.log('access forbidden');
                             res.status(403);
@@ -132,7 +136,8 @@ module.exports.controller = function (app, authService) {
                         res.status(500);
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
-                })
+                });
+
             },
             fail: function (error) {
                 console.log('deconnecté')
@@ -178,6 +183,7 @@ module.exports.controller = function (app, authService) {
                                     });
                                 }
                             });
+
                         } else {
                             console.log('access forbidden');
                             res.status(403);
@@ -191,6 +197,7 @@ module.exports.controller = function (app, authService) {
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
                 });
+
             },
 
             fail: function (err) {

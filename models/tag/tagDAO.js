@@ -17,9 +17,9 @@ module.exports = function (pg, url) {
                 name: 'fetch-all-tag',
                 text: 'SELECT * FROM public.tag'
             };
-            pool.query(query, (err, res) => {
-                done();
-                pool.end().then(() => console.log('pool has ended'));
+            client.query(query, (err, res) => {
+                done();client.end().then(()=>console.log('disconnected'))
+                    .catch();
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
@@ -45,9 +45,10 @@ module.exports = function (pg, url) {
                 values: [tag.libelle_tag]
             };
 
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                pool.end().then(() => console.log('pool has ended'));
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -74,9 +75,10 @@ module.exports = function (pg, url) {
                 text: 'SELECT * FROM public.tag WHERE id_tag = $1',
                 values: [id_tag]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                pool.end().then(() => console.log('pool has ended'));
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -102,9 +104,10 @@ module.exports = function (pg, url) {
                 text: 'UPDATE public.tag SET libelle_tag=$1 WHERE id_tag=$2 RETURNING *',
                 values: [tag.libelle_tag, tag.id_tag]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                pool.end().then(() => console.log('pool has ended'));
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -130,8 +133,10 @@ module.exports = function (pg, url) {
                 text: 'DELETE FROM public.tag WHERE id_tag=$1',
                 values: [id]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 pool.end().then(() => console.log('pool has ended'));
 
@@ -145,7 +150,6 @@ module.exports = function (pg, url) {
             })
         });
     };
-
 
     return module;
 };

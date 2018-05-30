@@ -33,6 +33,7 @@ module.exports.controller = function (app, authService) {
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
                 });
+
             },
 
             fail: function () {

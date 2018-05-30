@@ -3,7 +3,7 @@ const Comment = require('./comment.js');
 module.exports = function (pg, url) {
 
     var module = {};
-    var Tag = require('./tag');
+    var Comment = require('./comment');
 
     const pool = new pg.Pool({
         connectionString: url,
@@ -21,11 +21,10 @@ module.exports = function (pg, url) {
                 values: [comment.id_user, comment.content, comment.channel_id]
             };
 
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end()
-                    .then(() => console.log('client has disconnected'))
-                    .catch(err);
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -52,9 +51,10 @@ module.exports = function (pg, url) {
                 text: 'SELECT * FROM public.comment WHERE channel_id = $1',
                 values: [channel_id]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                pool.end().then(() => console.log('pool has ended'));
+                client.end().then(()=>console.log('disconnected'))
+                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -66,7 +66,5 @@ module.exports = function (pg, url) {
             })
         });
     };
-
-
     return module;
 };

@@ -1,9 +1,12 @@
 module.exports.controller = function (app, authService) {
 
+    const escape = require("html-escape");
     //BD
     const pg = require('pg');
     const url = process.env.DATABASE_URL;
 
+    const Comment = require('../models/comment/comment');
+    const commentDAO = require('../models/comment/commentDAO')(pg, url);
     const userDAO = require('../models/user/userDAO')(pg, url);
     const User = require('../models/user/user');
 
@@ -17,7 +20,7 @@ module.exports.controller = function (app, authService) {
                 console.log('success connexion');
                 userDAO.getById(id, {
                     success: function (user) {
-                        var tabChan = ytService().ytSearch(req.body.search, {
+                        ytService().ytSearch(req.body.search, {
                             success: function (tabChan) {
                                 console.log(tabChan);
 
@@ -49,7 +52,8 @@ module.exports.controller = function (app, authService) {
                         res.status(500);
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
-                })
+                });
+
             },
             fail: function () {
                 console.log('deconnecté');
@@ -84,6 +88,7 @@ module.exports.controller = function (app, authService) {
             success: function (id) {
                 console.log('success connexion');
                 userDAO.getById(id, {
+
                     success: function (user) {
                         ytService().ytChannel(req.params.channelId,{
                             success: function (channel) {
@@ -115,7 +120,8 @@ module.exports.controller = function (app, authService) {
                         res.status(500);
                         res.render('pages/error', {locals: {error: err, title: error}});
                     }
-                })
+                });
+
             },
             fail: function () {
                 console.log('deconnecté');
@@ -137,6 +143,48 @@ module.exports.controller = function (app, authService) {
                         res.render('pages/error', {locals: {error: error, title: error}});
                     }
                 });
+            }
+        })
+    });
+
+
+
+
+    // create a comment
+    app.post('/channel/comment/:channelId', function(req, res){
+        console.log('____add comment______');
+
+        authService.authenticate(req, {
+            success: function (id) {
+                console.log('connecté');
+                userDAO.getById(id, {
+                    success: function (user) {
+
+                        let comment = new Comment(null, escape(id_user, req.body.content), req.params.channelId);
+                        commentDAO.create(comment, {
+                            success: function (commentCreated) {
+                                res.status(401);
+                                res.redirect('/channel'+req.params.channelId);
+                            },
+                            fail: function () {
+                                console.log('getbyid tags fail');
+                                res.status(500);
+                                res.render('pages/error', {locals: {error: err, title: error}});
+                            }
+                        });
+                    },
+                    fail: function (err) {
+                        console.log('getbyid tags fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: err, title: error}});
+                    }
+                });
+
+            },
+            fail: function (error) {
+                console.log('non connecté');
+                res.status(403);
+                res.render('pages/403', {locals: {title: 'error 403'}});
             }
         })
     });
