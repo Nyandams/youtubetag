@@ -29,8 +29,8 @@ module.exports.controller = function (app, authService) {
                             },
                             fail: function (err) {
                                 console.log('fail add_tag');
-                                res.status(500);
-                                res.render('pages/error', {locals: {error: err, title: 'error', authenticated:true, isadmin: user.is_admin_user}});
+                                res.status(409);
+                                res.redirect('/channel/' + req.params.idChannel);
 
                             }
                         })
