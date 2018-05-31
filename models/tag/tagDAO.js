@@ -18,7 +18,6 @@ module.exports = function (pool) {
                     callback.fail(err);
                 } else {
                     console.log('success');
-                    console.log(res.rows);
                     callback.success(res.rows);
                 }
             })

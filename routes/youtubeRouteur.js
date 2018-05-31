@@ -26,7 +26,6 @@ module.exports.controller = function (app, authService, pool) {
                     success: function (user) {
                         ytService().ytSearch(req.body.search, {
                             success: function (tabChan) {
-                                console.log(tabChan);
                                 console.log('appel réussi');
 
                                        res.status(200);

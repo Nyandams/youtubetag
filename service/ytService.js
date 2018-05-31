@@ -22,7 +22,7 @@ module.exports = function() {
                 callback.success(ytChannel);
             })
             .catch(function(error){
-                console.log('________error  ytChannel api simple-youtube-api____________');
+                console.log('_________error  ytChannel api simple-youtube-api____________');
                 callback.fail(error);
             });
     };
@@ -44,7 +44,6 @@ module.exports = function() {
                     let ytChannel = new YtChannel(result.items[i].id.channelId, result.items[i].snippet.title, result.items[i].snippet.description, result.items[i].snippet.thumbnails.high.url);
                     tabResult.push(ytChannel);
                 }
-                //console.log(tabResult);
                 callback.success(tabResult);
             }
         });

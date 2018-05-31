@@ -1,5 +1,7 @@
 module.exports = function(pool){
 
+    const util = require('util')
+
     const tagLinkDAO = require('../models/lienTag/tag_linkDAO')(pool);
 
     const tagDAO = require('../models/tag/tagDAO')(pool);
@@ -73,7 +75,7 @@ module.exports = function(pool){
         console.log('___getTagUserByChannel___');
         tagLinkDAO.getTagByIdUserChannel(id_user, channelId, {
             success: function (tagsUser) {
-                console.log(tagsUser);
+                console.log('tag de l\'utilisateur vis à vis de la chaine:' + util.inspect(tagsUser));
                 callback.success(tagsUser);
             },
             fail: function (err) {

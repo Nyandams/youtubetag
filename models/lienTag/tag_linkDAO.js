@@ -13,6 +13,8 @@ module.exports = function (pool) {
                 text: 'SELECT tl.id_tag, ta.libelle_tag FROM tag_link tl JOIN tag ta on ta.id_tag = tl.id_tag WHERE tl.id_user=$1 AND tl.id_channel=$2',
                 values: [id_user, channelId]
             };
+            console.log('id_client: '+ id_user);
+            console.log('channelId: '+ channelId);
             client.query(query, (err, res) => {
                 done();
                 if (err) {
