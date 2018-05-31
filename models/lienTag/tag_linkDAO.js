@@ -7,16 +7,18 @@ module.exports = function (pg, url) {
     });
 
 
-    module.getTagByIdUserChannel = function(id_user, channelId, callback){
+    //return tags from tag_link
+    module.getTagByIdUserChannel = function (id_user, channelId, callback) {
         console.log('______getTagByIdUserChannel______');
         pool.connect(function (err, client, done) {
             var query = {
                 name: 'fetch-tag-by-user-channel',
-                text: 'SELECT * FROM public.tag_link WHERE id_user=$1 AND id_channel=$2',
+                text: 'SELECT tl.id_tag, ta.libelle_tag FROM tag_link tl JOIN tag ta on ta.id_tag = tl.id_tag WHERE tl.id_user=$1 AND tl.id_channel=$2',
                 values: [id_user, channelId]
             };
             pool.query(query, (err, res) => {
-                done();client.end().then(()=>console.log('disconnected'))
+                done();
+                client.end().then(() => console.log('disconnected'))
                     .catch();
                 if (err) {
                     console.log(err.stack);
@@ -43,13 +45,13 @@ module.exports = function (pg, url) {
 
             pool.query(query, (err, res) => {
                 done();
-                client.end().then(()=>console.log('disconnected'))
+                client.end().then(() => console.log('disconnected'))
                     .catch();
 
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
-                } else if(res.rowCount == 0) {
+                } else if (res.rowCount == 0) {
                     console.log('fail');
                     callback.fail(null);
                 } else {
@@ -63,7 +65,7 @@ module.exports = function (pg, url) {
 
     //get the 3 principals id_tag for a youtube channel
     module.getPrincipalIdTag = function (channelId, callback) {
-        console.log('______getTagByIdUserChannel______');
+        console.log('______getprincipalTag_____');
         pool.connect(function (err, client, done) {
             var query = {
                 name: 'fetch-principal-tag-channel',
@@ -71,7 +73,8 @@ module.exports = function (pg, url) {
                 values: [channelId]
             };
             pool.query(query, (err, res) => {
-                done();client.end().then(()=>console.log('disconnected'))
+                done();
+                client.end().then(() => console.log('disconnected'))
                     .catch();
                 if (err) {
                     console.log(err.stack);
@@ -85,6 +88,31 @@ module.exports = function (pg, url) {
         });
     };
 
+    // delete a tag_link
+    module.delete = function (id_user, channelId, id_tag, callback) {
+        console.log('______delete_tag_link_____');
+        pool.connect(function (err, client, done) {
+            var query = {
+                name: 'delete-tag-link',
+                text: 'DELETE FROM public.tag_link WHERE id_user=$1 AND id_channel=$2 AND id_tag=$3',
+                values: [id_user, channelId, id_tag]
+            };
+            pool.query(query, (err, res) => {
+                done();
+                client.end().then(() => console.log('disconnected'))
+                    .catch();
+
+
+                if (err) {
+                    console.log(err.stack);
+                    callback.fail(err);
+                } else {
+                    console.log('success');
+                    callback.success(res);
+                }
+            })
+        });
+    };
 
     return module;
 };

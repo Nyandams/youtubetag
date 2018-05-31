@@ -5,13 +5,13 @@
         <img class="col-xl-2 col-md-4" src="<%= channel.thumbnail %>"> </img>
         <div class="col-xl-10 col-md-8">
             <div class="d-flex w-100 justify-content-between">
-                <a href="https://www.youtube.com/channel/<%= locals.channel.channelId %>"><h5 class="mb-1"> <%= channel.title %> </h5></a>
+                <a href="https://www.youtube.com/channel/<%= channel.channelId %>"><h5 class="mb-1"> <%= channel.title %> </h5></a>
             </div>
             <p class="mb-1"> <%= channel.description %> </p>
             <div class="row">
-                <h5 class="text-muted"><span class="badge badge-primary">tag1</span></h5>
-                <h5 class="text-muted"><span class="badge badge-primary">tag2</span></h5>
-                <h5 class="text-muted"><span class="badge badge-primary">tag3</span></h5>
+                <% for (let i = 0; i < locals.tagsChannel.length; i++){ %>
+                <h5 class="text-muted"><span class="badge badge-primary"><%= locals.tagsChannel[i].libelle_tag %></span></h5>
+                <% } %>
             </div>
 
         </div>
@@ -21,24 +21,57 @@
 
 
 <% if( locals.authenticated) {%>
-<div class="center_div_channel tags">
-    <form class="input-group col-sm-2" method="post" action="/channel/tag/add/<%= locals.channel.channelId %>">
-        <select class="custom-select" id="tag_link" name="id_tag">
-            <option selected>Add a tag</option>
-            <% if (locals.tags != undefined){ %>
+<div class="center_div_channel" >
+<h2>Your tags</h2>
+    <div class="tags addTagLink">
+        <form class="input-group col-sm-2" method="post" action="/channel/tag/add/<%= locals.channel.channelId %>">
+            <select class="custom-select" id="tag_link" name="id_tag">
+                <option selected>Add a tag</option>
+                <% if (locals.tags != undefined){ %>
                 <% for(let i=0; i<locals.tags.length; i++){ %>
                 <option value="<%= locals.tags[i].id_tag %>"><%= locals.tags[i].libelle_tag %></option>
                 <% } %>
-            <% } %>
-        </select>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">Add</button>
-        </div>
-    </form>
+                <% } %>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Add</button>
+            </div>
+        </form>
 
+    </div>
+
+    <div class="row">
+    <% for(let i = 0; i<locals.tagsUtilisateur.length; i++){ %>
+    <div class="tags">
+        <div class="tag">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<%= locals.tagsUtilisateur[i].id_tag %>">
+                <%= locals.tags[i].libelle_tag %>
+            </button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal<%= locals.tagsUtilisateur[i].id_tag %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><%= locals.tags[i].libelle_tag %></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <button id="deleteTag" type="button" class="btn btn-secondary" onclick="deleteTagLink(<%= locals.tagsUtilisateur[i].id_tag %>)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <% } %>
+    </div>
 </div>
 <% }%>
-
 
 
 
@@ -65,3 +98,21 @@
     </div>
 <% }%>
 </div>
+
+
+<script>
+    function deleteTagLink(idTag){
+        var url = "/taglink/delete/<%= channel.channelId %>/";
+        var xhr = new XMLHttpRequest();
+        xhr.open("DELETE", url + idTag, true);
+
+        xhr.onreadystatechange = function() { // listen for state changes
+            if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+                console.log('redirect');
+                window.location.replace('/channel/<%= channel.channelId %>');
+            }
+        }
+
+        xhr.send(null);
+    }
+</script>

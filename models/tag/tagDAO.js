@@ -10,7 +10,7 @@ module.exports = function (pg, url) {
     });
 
 
-    module.getAll = function(callback){
+    module.getAll = function (callback) {
         console.log('______get_all_tag______');
         pool.connect(function (err, client, done) {
             var query = {
@@ -18,7 +18,8 @@ module.exports = function (pg, url) {
                 text: 'SELECT * FROM public.tag'
             };
             pool.query(query, (err, res) => {
-                done();client.end().then(()=>console.log('disconnected'))
+                done();
+                client.end().then(() => console.log('disconnected'))
                     .catch();
                 if (err) {
                     console.log(err.stack);
@@ -44,13 +45,13 @@ module.exports = function (pg, url) {
 
             pool.query(query, (err, res) => {
                 done();
-                client.end().then(()=>console.log('disconnected'))
+                client.end().then(() => console.log('disconnected'))
                     .catch();
 
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
-                } else if(res.rowCount == 0) {
+                } else if (res.rowCount == 0) {
                     console.log('fail');
                     callback.fail(null);
                 } else {
@@ -74,18 +75,19 @@ module.exports = function (pg, url) {
             };
             pool.query(query, (err, res) => {
                 done();
-                client.end().then(()=>console.log('disconnected'))
+                client.end().then(() => console.log('disconnected'))
                     .catch();
 
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
-                } else if(res.rowCount == 0) {
+                } else if (res.rowCount == 0) {
                     console.log('fail');
                     callback.fail(null);
                 } else {
-                    console.log('success');
+                    console.log('success getById_tag');
                     var tag = new Tag(res.rows[0].id_tag, res.rows[0].libelle_tag);
+                    console.log(tag);
                     callback.success(tag);
                 }
             })
@@ -103,13 +105,13 @@ module.exports = function (pg, url) {
             };
             pool.query(query, (err, res) => {
                 done();
-                client.end().then(()=>console.log('disconnected'))
+                client.end().then(() => console.log('disconnected'))
                     .catch();
 
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
-                } else if(res.rowCount == 0) {
+                } else if (res.rowCount == 0) {
                     console.log('fail');
                     callback.fail(null);
                 } else {
@@ -121,7 +123,7 @@ module.exports = function (pg, url) {
         });
     };
 
-    // update of a tag
+    // delete a tag
     module.delete = function (id, callback) {
         console.log('______delete_tag______');
         pool.connect(function (err, client, done) {
@@ -132,10 +134,9 @@ module.exports = function (pg, url) {
             };
             pool.query(query, (err, res) => {
                 done();
-                client.end().then(()=>console.log('disconnected'))
+                client.end().then(() => console.log('disconnected'))
                     .catch();
 
-                pool.end().then(() => console.log('pool has ended'));
 
                 if (err) {
                     console.log(err.stack);

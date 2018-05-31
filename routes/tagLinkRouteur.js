@@ -52,5 +52,43 @@ module.exports.controller = function (app, authService) {
     });
 
 
+    app.delete('/taglink/delete/:channelId/:idTag', function (req, res) {
+        console.log('____delete a tag link______');
+        authService.authenticate(req, {
+            success: function (id) {
+                console.log('connecté');
+                userDAO.getById(id, {
+                    success: function (user) {
+                        tagLinkDAO.delete(user.id_user, req.params.channelId, req.params.idTag, {
+                            success: function () {
+                                res.status(200);
+                                res.redirect('/channel/' + req.params.channelId);
+                            },
+                            fail: function (err) {
+                                console.log('fail delete taglink');
+                                res.status(500);
+                                res.redirect('/channel/' + req.params.channelId);
+
+                            }
+                        })
+                    },
+                    fail: function (err) {
+                        console.log('getbyid tags fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: err, title: 'error', authenticated:true, isadmin: user.is_admin_user}});
+                    }
+                });
+
+            },
+            fail: function (error) {
+                console.log('non connecté');
+                res.status(401);
+                res.render('pages/401', {locals: {title: 'error 403'}});
+            }
+        })
+    });
+
+
+
 };
 

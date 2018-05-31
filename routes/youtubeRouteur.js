@@ -106,16 +106,28 @@ module.exports.controller = function (app, authService) {
 
                                 tagDAO.getAll({
                                     success: function (tagArray) {
-                                        res.status(200);
-                                        res.render('pages/channel', {
-                                            locals: {
-                                                title: channelTag.channel.title,
-                                                comments: channelTag.comments,
-                                                channel: channelTag.channel,
-                                                tags: tagArray,
-                                                tagsChannel: channelTag.tags,
-                                                authenticated: true,
-                                                isadmin: user.is_admin_user
+                                        console.log('recuperation des tags posé par l\'user');
+                                        channelTagService().getTagUserByChannel(user.id_user, req.params.channelId, {
+                                            success: function (tagsUtilisateur) {
+                                                console.log('tagsUtilisateur: ' + tagsUtilisateur);
+                                                res.status(200);
+                                                res.render('pages/channel', {
+                                                    locals: {
+                                                        title: channelTag.channel.title,
+                                                        comments: channelTag.comments,
+                                                        channel: channelTag.channel,
+                                                        tags: tagArray,
+                                                        tagsChannel: channelTag.tags,
+                                                        tagsUtilisateur: tagsUtilisateur,
+                                                        authenticated: true,
+                                                        isadmin: user.is_admin_user
+                                                    }
+                                                });
+                                            },
+                                            fail: function (error) {
+                                                console.log('get tags utilisateur fail');
+                                                res.status(500);
+                                                res.render('pages/error', {locals: {error: error, title: 'error'}});
                                             }
                                         });
                                     },
