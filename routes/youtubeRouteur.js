@@ -88,6 +88,170 @@ module.exports.controller = function (app, authService, pool) {
 
 
 
+
+    app.get('/search/tag', function (req, res) {
+        console.log('get search tag ');
+        authService.authenticate(req, {
+            success: function (id) {
+                userDAO.getById(id, {
+                    success: function (user) {
+                        tagDAO.getAll({
+                            success: function (tagArray) {
+                                console.log('appel réussi');
+
+                                res.status(200);
+                                res.render('pages/searchTag', {
+                                    locals: {
+                                        title: 'Recherche : ' + req.body.search,
+                                        tags: tagArray,
+                                        authenticated: true,
+                                        isadmin: user.is_admin_user
+                                    }
+                                });
+                            },
+                            fail: function (err) {
+                                res.render('pages/error', {
+                                    locals: {
+                                        error: err, title: err
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    fail: function (err) {
+                        console.log('getbyid home fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: err, title: error}});
+                    }
+                });
+
+            },
+
+            fail: function () {
+                tagDAO.getAll({
+                    success: function (tagArray) {
+                        console.log('appel réussi');
+
+                        res.status(200);
+                        res.render('pages/searchTag', {
+                            locals: {
+                                title: 'Recherche : ' + req.body.search,
+                                tags: tagArray
+                            }
+                        });
+                    },
+                    fail: function (err) {
+                        res.render('pages/error', {
+                            locals: {
+                                error: err, title: err
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+
+    app.post('/search/tag', function (req, res) {
+        console.log('search');
+        authService.authenticate(req, {
+            success: function (id) {
+                console.log('success connexion');
+                userDAO.getById(id, {
+                    success: function (user) {
+
+                        channelTagService.getChannelsByTag(req.body.search, {
+                            success: function (tabChan) {
+                                tagDAO.getAll({
+                                   success: function (tagArray) {
+                                       console.log('appel réussi');
+
+                                       res.status(200);
+                                       res.render('pages/searchTag', {
+                                           locals: {
+                                               title: 'Recherche : ' + req.body.search,
+                                               channels: tabChan,
+                                               authenticated: true,
+                                               tags: tagArray,
+                                               isadmin: user.is_admin_user
+                                           }
+                                       });
+                                   },
+                                   fail: function (err) {
+                                       res.render('pages/error', {
+                                           locals: {
+                                               error: error, title: error, authenticated: true,
+                                               isadmin: user.is_admin_user
+                                           }
+                                       });
+                                   }
+                                });
+
+                            },
+                            fail: function (error) {
+                                console.log('search yt fail');
+                                res.status(500);
+                                res.render('pages/error', {
+                                    locals: {
+                                        error: error, title: error, authenticated: true,
+                                        isadmin: user.is_admin_user
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    fail: function (err) {
+                        console.log('getbyid home fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: err, title: error}});
+                    }
+                });
+
+            },
+            fail: function () {
+                console.log('deconnecté');
+
+                channelTagService.getChannelsByTag(req.body.search, {
+                    success: function (tabChan) {
+                        console.log(tabChan);
+                        tagDAO.getAll({
+                            success: function (tagArray) {
+                                console.log('appel réussi');
+
+                                res.status(200);
+                                res.render('pages/searchTag', {
+                                    locals: {
+                                        title: 'Recherche : ' + req.body.search,
+                                        channels: tabChan,
+                                        tags: tagArray
+                                    }
+                                });
+                            },
+                            fail: function (err) {
+                                res.render('pages/error', {
+                                    locals: {
+                                        error: err, title: err
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    fail: function (error) {
+                        console.log('search yt fail');
+                        res.status(500);
+                        res.render('pages/error', {locals: {error: error, title: error}});
+                    }
+                });
+
+            }
+        })
+    });
+
+
+
+
+
     app.get('/channel/:channelId', function (req, res) {
         console.log('channel: ' + req.params.channelId);
 

@@ -29,6 +29,33 @@ module.exports = function (pool) {
         });
     };
 
+
+    //return 25 id_channel which have the tag
+    module.getIdChannelByTag = function (id_tag, callback) {
+        console.log('______getTagByIdUserChannel______');
+        pool.connect(function (err, client, done) {
+            if (err) throw err;
+
+            var query = {
+                name: 'fetch-id-channel-by-tag',
+                text: 'SELECT DISTINCT id_channel FROM public.tag_link WHERE id_tag=$1',
+                values: [id_tag]
+            };
+            console.log(id_tag);
+            client.query(query, (err, res) => {
+                done();
+                if (err) {
+                    console.log(err.stack);
+                    callback.fail(err);
+                } else {
+                    console.log('success');
+                    console.log(res.rows);
+                    callback.success(res.rows);
+                }
+            })
+        });
+    };
+
     //create a tag_link
     module.addTagLink = function (tag_link, callback) {
         console.log('______add_tag_link______');

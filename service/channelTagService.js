@@ -84,6 +84,42 @@ module.exports = function(pool){
         })
     };
 
+    // get 25 channels that have the tag id_tag
+    module.getChannelsByTag = function (id_tag, callback) {
+        console.log('_____getChannelsByTag_____');
+
+        tagLinkDAO.getIdChannelByTag(id_tag,{
+          success: function (idArray) {
+              let channels = [];
+              var cpt = 0;
+              for(let i = 0; i < idArray.length; i++){
+                  ytService().ytChannel(idArray[i].id_channel, {
+                      success: function (chan) {
+                          console.log('success recuperation');
+                          channels.push(chan);
+                          console.log('channels en cours: '+channels)
+                          cpt++;
+                          console.log(cpt);
+                          if(cpt == idArray.length){
+                              console.log('channels by tag: '+channels);
+                              callback.success(channels);
+
+                          }
+                      },
+                      fail: function (err) {
+                          console.log('la channel n\'a pas pu être récupéré');
+                      }
+                  });
+
+
+              }
+          },
+            fail: function (err) {
+                callback.fail(err);
+            }
+        })
+    };
+
 
     return module;
 };
