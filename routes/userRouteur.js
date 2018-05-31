@@ -1,12 +1,9 @@
-module.exports.controller = function (app, authService) {
+module.exports.controller = function (app, authService, pool) {
     const escape = require("html-escape");
 
-//recup BD
-    const pg = require('pg');
-    const pgUrl = process.env.DATABASE_URL;
 //DTO + DAO
     const User = require('../models/user/user');
-    const UserDAO = require('../models/user/userDAO')(pg, pgUrl);
+    const UserDAO = require('../models/user/userDAO')(pool);
 
     console.log('userRouter');
 

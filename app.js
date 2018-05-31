@@ -22,6 +22,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/images/favicon.jpg'));
 
+//Database
+const pg = require('pg');
+const url = process.env.DATABASE_URL;
+
+const pool = new pg.Pool({
+    connectionString: url,
+    ssl: true
+});
 
 
 //authentification service
@@ -32,11 +40,11 @@ const jwt = require('jsonwebtoken');
 const randomSecretKey = uuidv4();
 var authService = require('./service/authService')(randomSecretKey, bcrypt, jwt);
 
-require('./routes/tagsRouteur').controller(app, authService);
-require('./routes/youtubeRouteur').controller(app, authService);
-require('./routes/userRouteur').controller(app, authService);
-require('./routes/homeRouteur').controller(app, authService);
-require('./routes/tagLinkRouteur').controller(app, authService);
+require('./routes/tagsRouteur').controller(app, authService, pool);
+require('./routes/youtubeRouteur').controller(app, authService, pool);
+require('./routes/userRouteur').controller(app, authService, pool);
+require('./routes/homeRouteur').controller(app, authService, pool);
+require('./routes/tagLinkRouteur').controller(app, authService, pool);
 
 // catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

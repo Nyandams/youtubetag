@@ -1,12 +1,10 @@
-module.exports = function(){
-    const pg = require('pg');
-    const url = process.env.DATABASE_URL;
+module.exports = function(pool){
 
-    const tagLinkDAO = require('../models/lienTag/tag_linkDAO')(pg, url);
+    const tagLinkDAO = require('../models/lienTag/tag_linkDAO')(pool);
 
-    const tagDAO = require('../models/tag/tagDAO')(pg, url);
+    const tagDAO = require('../models/tag/tagDAO')(pool);
 
-    const commentDAO = require('../models/comment/commentDAO')(pg, url);
+    const commentDAO = require('../models/comment/commentDAO')(pool);
 
     const ytService = require('../service/ytService');
 

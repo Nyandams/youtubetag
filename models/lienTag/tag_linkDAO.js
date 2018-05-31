@@ -1,25 +1,20 @@
-module.exports = function (pg, url) {
+module.exports = function (pool) {
     var module = {};
-
-    const pool = new pg.Pool({
-        connectionString: url,
-        ssl: true
-    });
 
 
     //return tags from tag_link
     module.getTagByIdUserChannel = function (id_user, channelId, callback) {
         console.log('______getTagByIdUserChannel______');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
+
             var query = {
                 name: 'fetch-tag-by-user-channel',
                 text: 'SELECT tl.id_tag, ta.libelle_tag FROM tag_link tl JOIN tag ta on ta.id_tag = tl.id_tag WHERE tl.id_user=$1 AND tl.id_channel=$2',
                 values: [id_user, channelId]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
@@ -37,16 +32,16 @@ module.exports = function (pg, url) {
         console.log('______add_tag_link______');
         console.log(tag_link);
         pool.connect(function (err, client, done) {
+            if (err) throw err;
+
             var query = {
                 name: 'create-tag-link',
                 text: 'INSERT INTO public.tag_link (id_user, id_tag, id_channel) VALUES ($1, $2, $3) RETURNING *',
                 values: [tag_link.id_user, tag_link.id_tag, tag_link.channelId]
             };
 
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -67,15 +62,15 @@ module.exports = function (pg, url) {
     module.getPrincipalIdTag = function (channelId, callback) {
         console.log('______getprincipalTag_____');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
+
             var query = {
                 name: 'fetch-principal-tag-channel',
                 text: 'SELECT id_tag FROM public.tag_link WHERE id_channel=$1 GROUP BY(id_tag) ORDER BY(count(*)) DESC LIMIT 3;',
                 values: [channelId]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
@@ -92,16 +87,14 @@ module.exports = function (pg, url) {
     module.delete = function (id_user, channelId, id_tag, callback) {
         console.log('______delete_tag_link_____');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
             var query = {
                 name: 'delete-tag-link',
                 text: 'DELETE FROM public.tag_link WHERE id_user=$1 AND id_channel=$2 AND id_tag=$3',
                 values: [id_user, channelId, id_tag]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
-
 
                 if (err) {
                     console.log(err.stack);

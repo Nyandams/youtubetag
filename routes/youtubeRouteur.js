@@ -1,23 +1,20 @@
-module.exports.controller = function (app, authService) {
+module.exports.controller = function (app, authService, pool) {
 
     const escape = require("html-escape");
-    //BD
-    const pg = require('pg');
-    const url = process.env.DATABASE_URL;
 
     const Comment = require('../models/comment/comment');
-    const commentDAO = require('../models/comment/commentDAO')(pg, url);
+    const commentDAO = require('../models/comment/commentDAO')(pool);
 
-    const userDAO = require('../models/user/userDAO')(pg, url);
+    const userDAO = require('../models/user/userDAO')(pool);
     const User = require('../models/user/user');
 
-    const tagDAO = require('../models/tag/tagDAO')(pg, url);
+    const tagDAO = require('../models/tag/tagDAO')(pool);
     const tag    = require('../models/tag/tag');
 
     //youtubeService
     const ytService = require('../service/ytService');
 
-    const channelTagService = require('../service/channelTagService');
+    const channelTagService = require('../service/channelTagService')(pool);
 
 
     app.post('/search', function (req, res) {
@@ -95,7 +92,7 @@ module.exports.controller = function (app, authService) {
     app.get('/channel/:channelId', function (req, res) {
         console.log('channel: ' + req.params.channelId);
 
-        channelTagService().getChannelTag(req.params.channelId, {
+        channelTagService.getChannelTag(req.params.channelId, {
             success: function (channelTag) {
                 console.log('channel tag service success');
                 authService.authenticate(req, {
@@ -107,7 +104,7 @@ module.exports.controller = function (app, authService) {
                                 tagDAO.getAll({
                                     success: function (tagArray) {
                                         console.log('recuperation des tags posé par l\'user');
-                                        channelTagService().getTagUserByChannel(user.id_user, req.params.channelId, {
+                                        channelTagService.getTagUserByChannel(user.id_user, req.params.channelId, {
                                             success: function (tagsUtilisateur) {
                                                 console.log('tagsUtilisateur: ' + tagsUtilisateur);
                                                 res.status(200);

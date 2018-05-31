@@ -1,26 +1,18 @@
-const Tag = require('./tag.js');
-
-module.exports = function (pg, url) {
+module.exports = function (pool) {
     var module = {};
     var Tag = require('./tag');
-
-    const pool = new pg.Pool({
-        connectionString: url,
-        ssl: true
-    });
 
 
     module.getAll = function (callback) {
         console.log('______get_all_tag______');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
             var query = {
                 name: 'fetch-all-tag',
                 text: 'SELECT * FROM public.tag'
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
                 if (err) {
                     console.log(err.stack);
                     callback.fail(err);
@@ -37,16 +29,16 @@ module.exports = function (pg, url) {
     module.create = function (tag, callback) {
         console.log('______create_tag______');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
+
             var query = {
                 name: 'create-tag',
                 text: 'INSERT INTO public.tag (libelle_tag) VALUES ($1) RETURNING *',
                 values: [tag.libelle_tag]
             };
 
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -68,15 +60,14 @@ module.exports = function (pg, url) {
     module.getById = function (id_tag, callback) {
         console.log('______getById_tag______');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
             var query = {
                 name: 'fetch-by-id-tag',
                 text: 'SELECT * FROM public.tag WHERE id_tag = $1',
                 values: [id_tag]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -98,15 +89,15 @@ module.exports = function (pg, url) {
     module.update = function (tag, callback) {
         console.log('______update_tag______');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
+
             var query = {
                 name: 'update-tag',
                 text: 'UPDATE public.tag SET libelle_tag=$1 WHERE id_tag=$2 RETURNING *',
                 values: [tag.libelle_tag, tag.id_tag]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
 
                 if (err) {
                     console.log(err.stack);
@@ -125,18 +116,18 @@ module.exports = function (pg, url) {
 
     // delete a tag
     module.delete = function (id, callback) {
+
         console.log('______delete_tag______');
         pool.connect(function (err, client, done) {
+            if (err) throw err;
+
             var query = {
                 name: 'delete-tag',
                 text: 'DELETE FROM public.tag WHERE id_tag=$1',
                 values: [id]
             };
-            pool.query(query, (err, res) => {
+            client.query(query, (err, res) => {
                 done();
-                client.end().then(() => console.log('disconnected'))
-                    .catch();
-
 
                 if (err) {
                     console.log(err.stack);

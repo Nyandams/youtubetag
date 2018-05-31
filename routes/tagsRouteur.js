@@ -1,14 +1,11 @@
-module.exports.controller = function (app, authService) {
+module.exports.controller = function (app, authService, pool) {
     //routeur de l'accueil + recherche de youtuber
     const escape = require("html-escape");
-//BD
-    const pg = require('pg');
-    const url = process.env.DATABASE_URL;
 
 //DTO et DAO
     const Tag = require('../models/tag/tag');
-    const tagDAO = require('../models/tag/tagDAO')(pg, url);
-    const userDAO = require('../models/user/userDAO')(pg, url);
+    const tagDAO = require('../models/tag/tagDAO')(pool);
+    const userDAO = require('../models/user/userDAO')(pool);
 
 
     // create a tag

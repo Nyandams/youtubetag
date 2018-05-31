@@ -1,15 +1,10 @@
-module.exports.controller = function (app, authService) {
+module.exports.controller = function (app, authService, pool) {
     //routeur de l'accueil + recherche de youtuber
 
 
-
-//BD
-    const pg = require('pg');
-    const url = process.env.DATABASE_URL;
-
 //DTO et DAO
     const User = require('../models/user/user');
-    const userDAO = require('../models/user/userDAO')(pg, url);
+    const userDAO = require('../models/user/userDAO')(pool);
 
 //accueil
     app.get('/', function (req, res) {
