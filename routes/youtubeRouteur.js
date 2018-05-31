@@ -15,7 +15,10 @@ module.exports.controller = function (app, authService) {
     const tag    = require('../models/tag/tag');
 
     //youtubeService
-    const ytService = require('./ytService');
+    const ytService = require('../service/ytService');
+
+    const channelTagService = require('../service/channelTagService');
+
 
     app.post('/search', function (req, res) {
         console.log('search');
@@ -87,127 +90,74 @@ module.exports.controller = function (app, authService) {
         })
     });
 
+
+
     app.get('/channel/:channelId', function (req, res) {
         console.log('channel: ' + req.params.channelId);
-        authService.authenticate(req, {
-            success: function (id) {
-                console.log('success connexion');
-                userDAO.getById(id, {
-                    success: function (user) {
-                        console.log('connect verif ok');
-                        ytService().ytChannel(req.params.channelId, {
-                            success: function (channel) {
-                                commentDAO.getByIdChannel(req.params.channelId, {
-                                    success: function (comments) {
-                                        tagDAO.getAll({
-                                            success: function (tagArray) {
-                                                res.status(200);
-                                                res.render('pages/channel', {
-                                                    locals: {
-                                                        title: channel.title,
-                                                        comments: comments,
-                                                        channel: channel,
-                                                        authenticated: true,
-                                                        tags: tagArray,
-                                                        isadmin: user.is_admin_user
-                                                    }
-                                                });
-                                            },
-                                            fail: function (error) {
-                                                console.log('getCommentByIdChannel home fail');
-                                                res.status(500);
-                                                res.render('pages/error', {
-                                                    locals: {
-                                                        error: error,
-                                                        title: error,
-                                                        authenticated: true,
-                                                        isadmin: user.is_admin_user
-                                                    }
-                                                });
-                                            }
-                                        });
 
+        channelTagService().getChannelTag(req.params.channelId, {
+            success: function (channelTag) {
+                console.log('channel tag service success');
+                authService.authenticate(req, {
+                    success: function (id) {
+                        console.log('connecté');
+                        userDAO.getById(id, {
+                            success: function (user) {
 
-
-
-
-
-
-
-                                    },
-                                    fail: function (err) {
-                                        console.log('getCommentByIdChannel home fail');
-                                        res.status(500);
-                                        res.render('pages/error', {
+                                tagDAO.getAll({
+                                    success: function (tagArray) {
+                                        res.status(200);
+                                        res.render('pages/channel', {
                                             locals: {
-                                                error: error,
-                                                title: error,
+                                                title: channelTag.channel.title,
+                                                comments: channelTag.comments,
+                                                channel: channelTag.channel,
+                                                tags: tagArray,
+                                                tagsChannel: channelTag.tags,
                                                 authenticated: true,
                                                 isadmin: user.is_admin_user
                                             }
                                         });
+                                    },
+                                    fail: function (error) {
+                                        console.log('get all tag fail');
+                                        res.status(500);
+                                        res.render('pages/error', {locals: {error: error, title: 'error'}});
                                     }
                                 });
 
-                            }
-                        }, {
+                            },
                             fail: function (error) {
+                                console.log('getUserByIdFail');
                                 res.status(500);
-                                res.render('pages/error', {
-                                    locals: {
-                                        error: error, title: error,
-                                        authenticated: true,
-                                        isadmin: user.is_admin_user
-                                    }
-                                });
+                                res.render('pages/error', {locals: {error: error, title: 'error'}});
                             }
                         })
-
                     },
-                    fail: function (error) {
-                        console.log('getbyid home fail');
-                        res.status(500);
-                        res.render('pages/error', {locals: {error: err, title: error}});
+                    fail: function () {
+                        console.log('deconnecté');
+                        res.status(200);
+                        res.render('pages/channel', {
+                            locals: {
+                                title: channelTag.channel.title,
+                                comments: channelTag.comments,
+                                channel: channelTag.channel,
+                                tagsChannel: channelTag.tags
+                            }
+                        });
+
                     }
                 });
 
             },
-            fail: function () {
-                console.log('deconnecté');
-                ytService().ytChannel(req.params.channelId, {
-                    success: function (channel) {
-                        commentDAO.getByIdChannel(req.params.channelId, {
-                            success: function (comments) {
-                                res.status(200);
-                                res.render('pages/channel', {
-                                    locals: {
-                                        title: channel.title,
-                                        comments: comments,
-                                        channel: channel
-                                    }
-                                });
-                            },
-                            fail: function (err) {
-                                console.log('getCommentByIdChannel home fail');
-                                res.status(500);
-                                res.render('pages/error', {
-                                    locals: {
-                                        error: error,
-                                        title: error
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    fail: function (error) {
-                        console.log('channel non trouvé');
-                        res.status(500);
-                        res.render('pages/error', {locals: {error: error, title: error}});
-                    }
-                });
+            fail: function (error) {
+                console.log('error channelTagService');
+                res.status(500);
+                res.render('pages/error', {locals: {error: error, title: 'error'}});
             }
         })
     });
+
 
 
     // create a comment

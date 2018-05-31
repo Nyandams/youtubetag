@@ -30,7 +30,7 @@ const uuidv4 = require('uuid/v4');
 const jwt = require('jsonwebtoken');
 
 const randomSecretKey = uuidv4();
-var authService = require('./routes/authService')(randomSecretKey, bcrypt, jwt);
+var authService = require('./service/authService')(randomSecretKey, bcrypt, jwt);
 
 require('./routes/tagsRouteur').controller(app, authService);
 require('./routes/youtubeRouteur').controller(app, authService);

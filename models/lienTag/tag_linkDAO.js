@@ -61,6 +61,29 @@ module.exports = function (pg, url) {
     };
 
 
+    //get the 3 principals id_tag for a youtube channel
+    module.getPrincipalIdTag = function (channelId, callback) {
+        console.log('______getTagByIdUserChannel______');
+        pool.connect(function (err, client, done) {
+            var query = {
+                name: 'fetch-principal-tag-channel',
+                text: 'SELECT id_tag FROM public.tag_link WHERE id_channel=$1 GROUP BY(id_tag) ORDER BY(count(*)) DESC LIMIT 3;',
+                values: [channelId]
+            };
+            pool.query(query, (err, res) => {
+                done();client.end().then(()=>console.log('disconnected'))
+                    .catch();
+                if (err) {
+                    console.log(err.stack);
+                    callback.fail(err);
+                } else {
+                    console.log('success');
+                    console.log(res.rows);
+                    callback.success(res.rows);
+                }
+            })
+        });
+    };
 
 
     return module;

@@ -3,6 +3,6 @@ function YtChannel(channelId, title, description, thumbnail) {
         this.title      = title,
         this.description= description,
         this.thumbnail  = thumbnail
-};
+}
 
 module.exports = YtChannel;
