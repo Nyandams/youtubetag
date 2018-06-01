@@ -32,7 +32,7 @@ module.exports = function (pool) {
 
     //return 25 id_channel which have the tag
     module.getIdChannelByTag = function (id_tag, callback) {
-        console.log('______getTagByIdUserChannel______');
+        console.log('______getIdChannelByTag______');
         pool.connect(function (err, client, done) {
             if (err) throw err;
 

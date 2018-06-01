@@ -1,0 +1,45 @@
+<% layout('layout') %>
+
+<div class="list-group">
+    <% if(locals.channels != undefined) { %>
+    <% locals.channels.forEach(function(channel) { %>
+<div>
+    <a href="/channel/<%= channel.channelId %>" class="list-group-item list-group-item-action flex-column align-items-start">
+
+        <div class="row">
+            <img class="col-xl-2 col-md-4" src="<%= channel.thumbnail %>"> </img>
+            <div class="col-xl-10 col-md-8">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"> <%= channel.title %> </h5>
+
+
+                </div>
+                <p class="mb-1"> <%= channel.description %> </p>
+
+            </div>
+        </div>
+    </a>
+   <!-- <button id="deleteFavorite" type="button" class="btn btn-secondary" onclick="deleteFavorite(<%= channel.channelId %>)">x</button> -->
+</div>
+    <% }) %>
+    <% } %>
+</div>
+
+
+<script>
+    function deleteFavorite(idChannel){
+        var url = "/tag/delete/";
+        var xhr = new XMLHttpRequest();
+        xhr.open("DELETE", url + idChannel, true);
+
+        xhr.onreadystatechange = function() { // listen for state changes
+            if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+                console.log('redirect');
+                window.location.replace('/favorite');
+            }
+        }
+
+        xhr.send(null);
+    }
+
+</script>

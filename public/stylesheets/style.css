@@ -96,3 +96,7 @@ div.card{
 .addTagLink{
     margin-bottom: 1%;
 }
+
+.btn-outline-secondary{
+    color: white;
+}

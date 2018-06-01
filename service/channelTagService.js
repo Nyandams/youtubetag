@@ -1,4 +1,4 @@
-module.exports = function(pool){
+module.exports = function (pool) {
 
     const util = require('util')
 
@@ -7,6 +7,10 @@ module.exports = function(pool){
     const tagDAO = require('../models/tag/tagDAO')(pool);
 
     const commentDAO = require('../models/comment/commentDAO')(pool);
+
+
+    const Favoris = require('../models/favoris/favoris');
+    const favorisDAO = require('../models/favoris/favorisDAO')(pool);
 
     const ytService = require('../service/ytService');
 
@@ -71,7 +75,7 @@ module.exports = function(pool){
     };
 
     // on récupère les tags d'un utilisateur vis à vis d'une chaine
-    module.getTagUserByChannel = function(id_user, channelId, callback){
+    module.getTagUserByChannel = function (id_user, channelId, callback) {
         console.log('___getTagUserByChannel___');
         tagLinkDAO.getTagByIdUserChannel(id_user, channelId, {
             success: function (tagsUser) {
@@ -89,37 +93,79 @@ module.exports = function(pool){
         console.log('_____getChannelsByTag_____');
 
         tagLinkDAO.getIdChannelByTag(id_tag,{
-          success: function (idArray) {
-              let channels = [];
-              var cpt = 0;
-              for(let i = 0; i < idArray.length; i++){
-                  ytService().ytChannel(idArray[i].id_channel, {
-                      success: function (chan) {
-                          console.log('success recuperation');
-                          channels.push(chan);
-                          console.log('channels en cours: '+channels)
-                          cpt++;
-                          console.log(cpt);
-                          if(cpt == idArray.length){
-                              console.log('channels by tag: '+channels);
-                              callback.success(channels);
+            success: function (idArray) {
+                let channels = [];
+                var cpt = 0;
+                for(let i = 0; i < idArray.length; i++){
+                    ytService().ytChannel(idArray[i].id_channel, {
+                        success: function (chan) {
+                            console.log('success recuperation');
+                            channels.push(chan);
+                            console.log('channels en cours: '+channels)
+                            cpt++;
+                            console.log(cpt);
+                            if(cpt == idArray.length){
+                                console.log('channels by tag: '+channels);
+                                callback.success(channels);
 
-                          }
-                      },
-                      fail: function (err) {
-                          console.log('la channel n\'a pas pu être récupéré');
-                      }
-                  });
+                            }
+                        },
+                        fail: function (err) {
+                            console.log('la channel n\'a pas pu être récupéré');
+                        }
+                    });
 
 
-              }
-          },
+                }
+            },
             fail: function (err) {
                 callback.fail(err);
             }
         })
     };
 
+
+    // get all the favorites of an user
+    module.getChannelsByUser = function (id_user, callback) {
+        console.log('_____getChannelsFavorite_____');
+
+        favorisDAO.getByUser(id_user, {
+            success: function (idArray) {
+                let channels = [];
+                var cpt = 0;
+                if (idArray.length == 0) {
+                    callback.success(channels);
+                } else {
+                    for (let i = 0; i < idArray.length; i++) {
+                        ytService().ytChannel(idArray[i].id_channel, {
+                            success: function (chan) {
+                                console.log('success recuperation');
+                                channels.push(chan);
+                                console.log('channels en cours: ' + channels)
+                                cpt++;
+                                console.log(cpt);
+                                if (cpt >= idArray.length) {
+                                    console.log('channels by tag: ' + channels);
+                                    callback.success(channels);
+
+                                }
+                            },
+                            fail: function (err) {
+                                console.log('la channel n\'a pas pu être récupéré');
+                                cpt++;
+                            }
+                        });
+
+
+                    }
+                }
+
+            },
+            fail: function (err) {
+                callback.fail(err);
+            }
+        })
+    };
 
     return module;
 };

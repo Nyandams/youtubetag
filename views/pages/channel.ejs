@@ -1,4 +1,5 @@
 <% layout('layout') %>
+
 <div class="list-group center_div_channel">
     <div class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="row">
@@ -18,7 +19,14 @@
     </div>
     </div>
 </div>
+<% if(locals.authenticated){ %>
+<div class="center_div_channel">
+    <form class="input-group col-sm-2 center_favorite" method="post" action="/channel/fav/add/<%= locals.channel.channelId %>">
+        <button class="btn btn-outline-secondary" type="submit">Add to the favorites</button>
+    </form>
+</div>
 
+<%} %>
 
 <% if( locals.authenticated) {%>
 <div class="center_div_channel" >

@@ -145,7 +145,7 @@ module.exports.controller = function (app, authService, pool) {
         })
     });
 
-//accueil
+//get the tags interface
     app.get('/tags', function (req, res) {
         console.log('home');
         authService.authenticate(req, {
