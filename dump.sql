@@ -63,11 +63,11 @@ DECLARE
     BEGIN
 
     FOR id_us IN user_cur LOOP
-	raise notice 'User id: %', id_user;
+	
         SELECT pseudo_user INTO pseudo
         FROM public.user
         WHERE id_user = id_us;
-
+	raise notice 'User : %', pseudo;
 
         FOR channel IN fav_cur LOOP
 
