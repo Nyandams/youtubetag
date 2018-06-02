@@ -52,7 +52,7 @@ END$$;
 
 
 
-CREATE OR REPLACE FUNCTION list_favoris() RETURNS void AS $$
+CREATE OR REPLACE FUNCTION list_comment() RETURNS void AS $$
 DECLARE
     user_cur CURSOR FOR SELECT * FROM public.user;
     userRow public.user%ROWTYPE;
