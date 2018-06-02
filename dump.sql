@@ -89,9 +89,10 @@ DECLARE
             END IF;
 		
 		END LOOP;
-		CLOSE comment_cur;
+		
 		
 	END LOOP;
+	CLOSE comment_cur;
 	CLOSE user_cur;
 END;
 $$ LANGUAGE 'plpgsql';
