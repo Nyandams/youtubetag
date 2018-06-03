@@ -52,40 +52,50 @@ END$$;
 
 
 
-CREATE OR REPLACE FUNCTION list_favoris() RETURNS void AS $$
+CREATE OR REPLACE FUNCTION list_comment() RETURNS void AS $$
 DECLARE
-    user_cur CURSOR FOR SELECT id_user FROM public.user;
-    pseudo varchar;
-	id_us integer;
-	channel varchar;
-    fav_cur CURSOR FOR SELECT DISTINCT id_channel FROM public.favoris;
+    user_cur CURSOR FOR SELECT * FROM public.user;
+    userRow public.user%ROWTYPE;
+	pseudo varchar;
+	
+    comment_cur CURSOR FOR SELECT * FROM public.comment;
     exist integer;
+	comment_row public.comment%ROWTYPE;
+	
     BEGIN
 
-    FOR id_us IN user_cur LOOP
-	raise notice 'User id: %', id_user;
-        SELECT pseudo_user INTO pseudo
+	OPEN user_cur;
+	
+	LOOP
+		FETCH user_cur INTO userRow;
+		SELECT pseudo_user INTO pseudo
         FROM public.user
-        WHERE id_user = id_us;
-
-
-        FOR channel IN fav_cur LOOP
-
-            SELECT COUNT(*) INTO exist
-            FROM public.favoris
-            WHERE id_user=id_us
-            AND id_channel=channel;
+        WHERE id_user = userRow.id_user;
+		raise notice 'User : %', pseudo;
+		
+		
+		OPEN comment_cur;
+		
+		LOOP
+			FETCH comment_cur INTO comment_row;
+		
+			SELECT COUNT(*) INTO exist
+           	FROM public.comment
+            WHERE pseudo_user = pseudo
+            AND id_comment = comment_row.id_comment;
 
             IF exist>0 THEN
-                raise notice 'like: %', channel;
+                raise notice 'a commenté: %', comment_row.content;
             END IF;
-
-
-        END LOOP;
-    END LOOP;
-
+		
+		END LOOP;
+		
+		
+	END LOOP;
+	CLOSE comment_cur;
+	CLOSE user_cur;
 END;
-
+$$ LANGUAGE 'plpgsql';
 
 SET default_with_oids = false;
 
