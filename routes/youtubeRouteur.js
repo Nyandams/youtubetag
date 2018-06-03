@@ -154,7 +154,7 @@ module.exports.controller = function (app, authService, pool) {
 
 
     app.post('/search/tag', function (req, res) {
-        console.log('search');
+        console.log('search tag');
         authService.authenticate(req, {
             success: function (id) {
                 console.log('success connexion');
@@ -222,7 +222,7 @@ module.exports.controller = function (app, authService, pool) {
                                 res.status(200);
                                 res.render('pages/searchTag', {
                                     locals: {
-                                        title: 'Recherche : ' + req.body.search,
+                                        title: 'Recherche par tag ',
                                         channels: tabChan,
                                         tags: tagArray
                                     }
