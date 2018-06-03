@@ -2,7 +2,7 @@ module.exports.controller = function (app, authService, pool) {
     //routeur de l'accueil + recherche de youtuber
     const escape = require("html-escape");
 
-//DTO et DAO
+    //DTO et DAO
     const Tag = require('../models/tag/tag');
     const tagDAO = require('../models/tag/tagDAO')(pool);
     const userDAO = require('../models/user/userDAO')(pool);
@@ -35,7 +35,14 @@ module.exports.controller = function (app, authService, pool) {
                     fail: function (err) {
                         console.log('getbyid tags fail');
                         res.status(500);
-                        res.render('pages/error', {locals: {error: err, title: 'error', authenticated:true, isadmin: user.is_admin_user}});
+                        res.render('pages/error', {
+                            locals: {
+                                error: err,
+                                title: 'error',
+                                authenticated: true,
+                                isadmin: user.is_admin_user
+                            }
+                        });
                     }
                 });
 
@@ -48,7 +55,7 @@ module.exports.controller = function (app, authService, pool) {
         })
     });
 
-
+    //delete a tagLink
     app.delete('/taglink/delete/:channelId/:idTag', function (req, res) {
         console.log('____delete a tag link______');
         authService.authenticate(req, {
@@ -72,7 +79,14 @@ module.exports.controller = function (app, authService, pool) {
                     fail: function (err) {
                         console.log('getbyid tags fail');
                         res.status(500);
-                        res.render('pages/error', {locals: {error: err, title: 'error', authenticated:true, isadmin: user.is_admin_user}});
+                        res.render('pages/error', {
+                            locals: {
+                                error: err,
+                                title: 'error',
+                                authenticated: true,
+                                isadmin: user.is_admin_user
+                            }
+                        });
                     }
                 });
 
@@ -84,7 +98,6 @@ module.exports.controller = function (app, authService, pool) {
             }
         })
     });
-
 
 
 };

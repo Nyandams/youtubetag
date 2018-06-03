@@ -2,7 +2,12 @@ module.exports = function (pool) {
     var module = {};
 
 
-    //return tags from tag_link
+    /**
+     * @desc return tags from tag_link where id_user is id_user
+     * @param {integer} id_user
+     * @param {String} channelId
+     * @param {Function} callback
+     */
     module.getTagByIdUserChannel = function (id_user, channelId, callback) {
         console.log('______getTagByIdUserChannel______');
         pool.connect(function (err, client, done) {
@@ -30,7 +35,11 @@ module.exports = function (pool) {
     };
 
 
-    //return 25 id_channel which have the tag
+    /**
+     * @desc return 25 id_channel which have the tag id_tag in tag_link
+     * @param {integer} id_tag
+     * @param {Function} callback
+     */
     module.getIdChannelByTag = function (id_tag, callback) {
         console.log('______getIdChannelByTag______');
         pool.connect(function (err, client, done) {
@@ -56,7 +65,12 @@ module.exports = function (pool) {
         });
     };
 
-    //create a tag_link
+
+    /**
+     * @desc create a tag_link
+     * @param {integer} tag_link
+     * @param {Function} callback
+     */
     module.addTagLink = function (tag_link, callback) {
         console.log('______add_tag_link______');
         console.log(tag_link);
@@ -87,7 +101,12 @@ module.exports = function (pool) {
     };
 
 
-    //get the 3 principals id_tag for a youtube channel
+
+    /**
+     * @desc get the 3 principals id_tag for a youtube channel
+     * @param {String} channelId
+     * @param {Function} callback
+     */
     module.getPrincipalIdTag = function (channelId, callback) {
         console.log('______getprincipalTag_____');
         pool.connect(function (err, client, done) {
@@ -112,7 +131,15 @@ module.exports = function (pool) {
         });
     };
 
-    // delete a tag_link
+
+
+    /**
+     * @desc delete a tag_link
+     * @param {integer} id_user
+     * @param {String} channelId
+     * @param {integer} id_tag
+     * @param {Function} callback
+     */
     module.delete = function (id_user, channelId, id_tag, callback) {
         console.log('______delete_tag_link_____');
         pool.connect(function (err, client, done) {

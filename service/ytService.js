@@ -7,10 +7,15 @@ module.exports = function() {
     const module ={};
 
     const youTube = new YouTube();
-
+    // api key
     youTube.setKey('AIzaSyCc_SHX_DcowckZkccEfjIxQ3uOzW9k9Pw');
 
 
+    /**
+     * @desc return a {ytChannel} or error
+     * @param channelId
+     * @param callback
+     */
     module.ytChannel = function(channelId, callback){
 
         var ytChannel = 'https://www.youtube.com/channel/' + channelId;
@@ -27,6 +32,11 @@ module.exports = function() {
             });
     };
 
+    /**
+     * @desc return a maximum of 25 {ytChannel}
+     * @param {String} search
+     * @param {Function} callback
+     */
     module.ytSearch = function(search, callback){
         console.log('ytSearch');
         youTube.search(search, 25, {type: 'channel', part: 'snippet'}, function (error, result) {

@@ -3,7 +3,11 @@ module.exports = function (pool) {
     var module = {};
     var Comment = require('./comment');
 
-    //create a comment
+    /**
+     * @desc create a comment
+     * @param {Comment} comment
+     * @param {Function} callback
+     */
     module.create = function (comment, callback) {
         console.log('______create_comment______');
         pool.connect(function (err, client, done) {
@@ -34,7 +38,12 @@ module.exports = function (pool) {
     };
 
 
-    //callback succeed(rows) if the tag with
+
+    /**
+     * @desc return a channel which the id is channel_id
+     * @param {String} channel_id
+     * @param {Function} callback
+     */
     module.getByIdChannel = function (channel_id, callback) {
         console.log('______getByIdChannel__comment____');
         pool.connect(function (err, client, done) {

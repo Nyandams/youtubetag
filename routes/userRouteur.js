@@ -1,13 +1,13 @@
 module.exports.controller = function (app, authService, pool) {
     const escape = require("html-escape");
 
-//DTO + DAO
+    //DTO + DAO
     const User = require('../models/user/user');
     const UserDAO = require('../models/user/userDAO')(pool);
 
     console.log('userRouter');
 
-//get signup page
+    //get signup page
     app.get('/user/signup', function (req, res) {
         console.log('______________get signup________________');
         authService.authenticate(req, {
@@ -31,7 +31,7 @@ module.exports.controller = function (app, authService, pool) {
         });
     });
 
-//get signin page
+    //get signin page
     app.get('/user/signin', function (req, res) {
         authService.authenticate(req, {
             success: function (idUser) {
@@ -45,7 +45,7 @@ module.exports.controller = function (app, authService, pool) {
 
     });
 
-//sign up
+    //sign up
     app.post('/user/signup', function (req, res) {
         console.log('signup');
 
@@ -56,7 +56,7 @@ module.exports.controller = function (app, authService, pool) {
                     success: function (savedUser) {
                         console.log("account created");
                         var token = authService.createToken(savedUser.id_user);
-                        res.cookie('youtubetag', token, {expires: new Date(Date.now()+900000), httpOnly: true});
+                        res.cookie('youtubetag', token, {expires: new Date(Date.now() + 900000), httpOnly: true});
                         res.status(201);
                         res.render('pages/home', {
                             locals: {
@@ -93,7 +93,7 @@ module.exports.controller = function (app, authService, pool) {
     });
 
     //signout
-    app.get('/user/signout', function(req, res) {
+    app.get('/user/signout', function (req, res) {
         res.clearCookie('youtubetag');
         res.redirect('/');
     });
@@ -106,7 +106,7 @@ module.exports.controller = function (app, authService, pool) {
                     console.log('authenticated');
                     var token = authService.createToken(user.id_user);
                     res.status(200);
-                    res.cookie('youtubetag', token, {expires: new Date(Date.now()+900000), httpOnly: true});
+                    res.cookie('youtubetag', token, {expires: new Date(Date.now() + 900000), httpOnly: true});
                     res.render('pages/home', {
                         locals: {
                             title: 'YoutubeTag',

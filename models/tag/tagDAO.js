@@ -3,6 +3,10 @@ module.exports = function (pool) {
     var Tag = require('./tag');
 
 
+    /**
+     * @desc get all the tags in the database
+     * @param {Function} callback
+     */
     module.getAll = function (callback) {
         console.log('______get_all_tag______');
         pool.connect(function (err, client, done) {
@@ -24,7 +28,13 @@ module.exports = function (pool) {
         });
     };
 
-    //create a tag
+
+
+    /**
+     * @desc create a tag
+     * @param {Tag} tag
+     * @param {Function} callback
+     */
     module.create = function (tag, callback) {
         console.log('______create_tag______');
         pool.connect(function (err, client, done) {
@@ -55,7 +65,12 @@ module.exports = function (pool) {
     };
 
 
-    //callback succeed(rows) if the tag with id_tag exists
+    //
+    /**
+     * @desc callback succeed(rows) if the tag with id_tag exists
+     * @param {integer} id_tag
+     * @param {Function} callback
+     */
     module.getById = function (id_tag, callback) {
         console.log('______getById_tag______');
         pool.connect(function (err, client, done) {
@@ -84,7 +99,12 @@ module.exports = function (pool) {
         });
     };
 
-    // update of a tag
+
+    /**
+     * @desc update of a tag
+     * @param {Tag} tag
+     * @param {Function} callback
+     */
     module.update = function (tag, callback) {
         console.log('______update_tag______');
         pool.connect(function (err, client, done) {
@@ -113,7 +133,14 @@ module.exports = function (pool) {
         });
     };
 
-    // delete a tag
+
+
+
+    /**
+     * @desc delete a tag
+     * @param {integer} id
+     * @param {Function} callback
+     */
     module.delete = function (id, callback) {
 
         console.log('______delete_tag______');

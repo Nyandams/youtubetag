@@ -36,7 +36,14 @@ module.exports.controller = function (app, authService, pool) {
                     fail: function (err) {
                         console.log('getbyid tags fail');
                         res.status(500);
-                        res.render('pages/error', {locals: {error: err, title: 'error', authenticated:true, isadmin: user.is_admin_user}});
+                        res.render('pages/error', {
+                            locals: {
+                                error: err,
+                                title: 'error',
+                                authenticated: true,
+                                isadmin: user.is_admin_user
+                            }
+                        });
                     }
                 });
 
@@ -61,12 +68,26 @@ module.exports.controller = function (app, authService, pool) {
                             success: function (channels) {
                                 console.log('getChannelsByUser success');
                                 res.status(200);
-                                res.render('pages/profil', {locals: {channels: channels, title: 'Favorites', authenticated: true, isadmin: user.is_admin_user}});
+                                res.render('pages/profil', {
+                                    locals: {
+                                        channels: channels,
+                                        title: 'Favorites',
+                                        authenticated: true,
+                                        isadmin: user.is_admin_user
+                                    }
+                                });
                             },
                             fail: function (err) {
                                 console.log('getChannelsByUser');
                                 res.status(500);
-                                res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
+                                res.render('pages/error', {
+                                    locals: {
+                                        error: err,
+                                        title: error,
+                                        authenticated: true,
+                                        isadmin: user.is_admin_user
+                                    }
+                                });
                             }
                         })
 
@@ -89,7 +110,7 @@ module.exports.controller = function (app, authService, pool) {
     });
 
 
-
+    //delete a favorite
     app.delete('/favorite/delete/:channelId', function (req, res) {
         console.log('____delete a favorite______');
         authService.authenticate(req, {
@@ -103,7 +124,7 @@ module.exports.controller = function (app, authService, pool) {
                                 res.redirect('/favorite');
                             },
                             fail: function (err) {
-                                console.log('fail delete favorite');
+                                console.log('fail delete favorite ');
                                 res.status(500);
                                 res.redirect('/favorite');
 
@@ -113,7 +134,14 @@ module.exports.controller = function (app, authService, pool) {
                     fail: function (err) {
                         console.log('getbyid tags fail');
                         res.status(500);
-                        res.render('pages/error', {locals: {error: err, title: 'error', authenticated:true, isadmin: user.is_admin_user}});
+                        res.render('pages/error', {
+                            locals: {
+                                error: err,
+                                title: 'error',
+                                authenticated: true,
+                                isadmin: user.is_admin_user
+                            }
+                        });
                     }
                 });
 

@@ -3,7 +3,11 @@ const User = require('./user.js');
 module.exports = function (pool) {
     var module = {};
 
-    //create an user
+    /**
+     * @desc create an user
+     * @param {User} user
+     * @param {Function} callback
+     */
     module.create = function (user, callback) {
         console.log('______create_user______');
         pool.connect(function (err, client, done) {
@@ -33,8 +37,13 @@ module.exports = function (pool) {
         });
     };
 
+    /**
+     * @desc callback succeed(rows) if an user with pseudo or email exist
+     * @param {String} pseudo
+     * @param {String} email
+     * @param {Function} callback
+     */
 
-    //callback succeed(rows) if an user with pseudo or email exist
     module.getByEmailPseudo = function (pseudo, email, callback) {
         console.log('______getByEmailPseudo______');
         pool.connect(function (err, client, done) {
@@ -64,7 +73,12 @@ module.exports = function (pool) {
         });
     };
 
-    //callback succeed(rows) if an user with email exist
+
+    /**
+     * @desc callback succeed(rows) if an user with email exist
+     * @param {String} pseudo
+     * @param {Function} callback
+     */
     module.getByPseudo = function (pseudo, callback) {
         console.log('______getByEmail______');
         pool.connect(function (err, client, done) {
@@ -96,7 +110,12 @@ module.exports = function (pool) {
     };
 
 
-    //callback succeed(rows) if an user with email exist
+
+    /**
+     * @desc callback succeed(rows) if an user with email exist
+     * @param {String} email
+     * @param {String} callback
+     */
     module.getByEmail = function (email, callback) {
         console.log('______getByEmail______');
         pool.connect(function (err, client, done) {
@@ -129,7 +148,12 @@ module.exports = function (pool) {
     };
 
 
-    //callback succeed(rows) if an user with email exist
+
+    /**
+     * @desc callback succeed(rows) if an user with email exist
+     * @param {int} id
+     * @param {Function} callback
+     */
     module.getById = function (id, callback) {
         console.log('______getById______');
         pool.connect(function (err, client, done) {

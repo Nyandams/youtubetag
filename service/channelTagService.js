@@ -18,7 +18,12 @@ module.exports = function (pool) {
 
     const module = {};
 
-    // recupère la chaine et les 3 tags principaux de la chaine + les commentaires
+
+    /**
+     * @desc recupère la chaine et les 3 tags principaux de la chaine + les commentaires
+     * @param {String} channelId
+     * @param {Function} callback
+     */
     module.getChannelTag = function (channelId, callback) {
         console.log('recupération de la channel yt');
         ytService().ytChannel(channelId, {
@@ -74,7 +79,13 @@ module.exports = function (pool) {
         })
     };
 
-    // on récupère les tags d'un utilisateur vis à vis d'une chaine
+
+    /**
+     * @desc on récupère les tags d'un utilisateur vis à vis d'une chaine
+     * @param {integer} id_user
+     * @param {String} channelId
+     * @param {Function} callback
+     */
     module.getTagUserByChannel = function (id_user, channelId, callback) {
         console.log('___getTagUserByChannel___');
         tagLinkDAO.getTagByIdUserChannel(id_user, channelId, {
@@ -88,7 +99,13 @@ module.exports = function (pool) {
         })
     };
 
-    // get 25 channels that have the tag id_tag
+
+
+    /**
+     * @desc get 25 channels that have the tag id_tag
+     * @param {integer} id_tag
+     * @param {Function} callback
+     */
     module.getChannelsByTag = function (id_tag, callback) {
         console.log('_____getChannelsByTag_____');
 
@@ -132,7 +149,11 @@ module.exports = function (pool) {
     };
 
 
-    // get all the favorites of an user
+    /**
+     * @desc get all the favorites of an user
+     * @param id_user
+     * @param callback
+     */
     module.getChannelsByUser = function (id_user, callback) {
         console.log('_____getChannelsFavorite_____');
 

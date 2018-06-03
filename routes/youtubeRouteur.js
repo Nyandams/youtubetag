@@ -9,14 +9,14 @@ module.exports.controller = function (app, authService, pool) {
     const User = require('../models/user/user');
 
     const tagDAO = require('../models/tag/tagDAO')(pool);
-    const tag    = require('../models/tag/tag');
+    const tag = require('../models/tag/tag');
 
     //youtubeService
     const ytService = require('../service/ytService');
 
     const channelTagService = require('../service/channelTagService')(pool);
 
-
+    // search a youtuber
     app.post('/search', function (req, res) {
         console.log('search');
         authService.authenticate(req, {
@@ -28,15 +28,15 @@ module.exports.controller = function (app, authService, pool) {
                             success: function (tabChan) {
                                 console.log('appel réussi');
 
-                                       res.status(200);
-                                       res.render('pages/home', {
-                                           locals: {
-                                               title: 'Recherche : ' + req.body.search,
-                                               channels: tabChan,
-                                               authenticated: true,
-                                               isadmin: user.is_admin_user
-                                           }
-                                       });
+                                res.status(200);
+                                res.render('pages/home', {
+                                    locals: {
+                                        title: 'Recherche : ' + req.body.search,
+                                        channels: tabChan,
+                                        authenticated: true,
+                                        isadmin: user.is_admin_user
+                                    }
+                                });
 
                             },
                             fail: function (error) {
@@ -86,9 +86,7 @@ module.exports.controller = function (app, authService, pool) {
         })
     });
 
-
-
-
+    // get search by tag page
     app.get('/search/tag', function (req, res) {
         console.log('get search tag ');
         authService.authenticate(req, {
@@ -152,7 +150,7 @@ module.exports.controller = function (app, authService, pool) {
         });
     });
 
-
+    // search by tag
     app.post('/search/tag', function (req, res) {
         console.log('search tag');
         authService.authenticate(req, {
@@ -164,28 +162,28 @@ module.exports.controller = function (app, authService, pool) {
                         channelTagService.getChannelsByTag(req.body.search, {
                             success: function (tabChan) {
                                 tagDAO.getAll({
-                                   success: function (tagArray) {
-                                       console.log('appel réussi');
+                                    success: function (tagArray) {
+                                        console.log('appel réussi');
 
-                                       res.status(200);
-                                       res.render('pages/searchTag', {
-                                           locals: {
-                                               title: 'Recherche : ' + req.body.search,
-                                               channels: tabChan,
-                                               authenticated: true,
-                                               tags: tagArray,
-                                               isadmin: user.is_admin_user
-                                           }
-                                       });
-                                   },
-                                   fail: function (err) {
-                                       res.render('pages/error', {
-                                           locals: {
-                                               error: error, title: error, authenticated: true,
-                                               isadmin: user.is_admin_user
-                                           }
-                                       });
-                                   }
+                                        res.status(200);
+                                        res.render('pages/searchTag', {
+                                            locals: {
+                                                title: 'Recherche : ' + req.body.search,
+                                                channels: tabChan,
+                                                authenticated: true,
+                                                tags: tagArray,
+                                                isadmin: user.is_admin_user
+                                            }
+                                        });
+                                    },
+                                    fail: function (err) {
+                                        res.render('pages/error', {
+                                            locals: {
+                                                error: error, title: error, authenticated: true,
+                                                isadmin: user.is_admin_user
+                                            }
+                                        });
+                                    }
                                 });
 
                             },
@@ -248,10 +246,7 @@ module.exports.controller = function (app, authService, pool) {
         })
     });
 
-
-
-
-
+    // get the channel which the id is channelId
     app.get('/channel/:channelId', function (req, res) {
         console.log('channel: ' + req.params.channelId);
 
@@ -329,7 +324,6 @@ module.exports.controller = function (app, authService, pool) {
             }
         })
     });
-
 
 
     // create a comment

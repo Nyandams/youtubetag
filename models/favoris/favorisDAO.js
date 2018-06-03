@@ -1,7 +1,11 @@
 module.exports = function (pool) {
     var module = {};
 
-    //create a tag_link
+    /**
+     * @desc create a favoris in the DB
+     * @param {Favoris} fav
+     * @param {Function} callback
+     */
     module.addFavoris = function (fav, callback) {
         console.log('______add_favoris______');
         pool.connect(function (err, client, done) {
@@ -31,8 +35,11 @@ module.exports = function (pool) {
     };
 
 
-
-
+    /**
+     * @desc get all the favoris where the id_user is id_user
+     * @param {integer} id_user
+     * @param {Function} callback
+     */
     module.getByUser  = function (id_user, callback) {
         console.log('______getFavoritesByUser______');
         pool.connect(function (err, client, done) {
@@ -58,7 +65,12 @@ module.exports = function (pool) {
     };
 
 
-    // delete a favorite
+    /**
+     * @desc delete a favorite
+     * @param {integer} id_user
+     * @param {String} channelId
+     * @param {Function} callback
+     */
     module.delete = function (id_user, channelId, callback) {
         console.log('______delete_favorite_____');
         pool.connect(function (err, client, done) {

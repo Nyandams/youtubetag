@@ -2,11 +2,11 @@ module.exports.controller = function (app, authService, pool) {
     //routeur de l'accueil + recherche de youtuber
 
 
-//DTO et DAO
+    //DTO et DAO
     const User = require('../models/user/user');
     const userDAO = require('../models/user/userDAO')(pool);
 
-//accueil
+    //accueil and search by name
     app.get('/', function (req, res) {
         console.log('home');
         authService.authenticate(req, {
@@ -38,7 +38,6 @@ module.exports.controller = function (app, authService, pool) {
             }
         });
     });
-
 
 
 };

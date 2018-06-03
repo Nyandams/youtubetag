@@ -9,7 +9,7 @@ module.exports.controller = function (app, authService, pool) {
 
 
     // create a tag
-    app.post('/tag/add', function(req, res){
+    app.post('/tag/add', function (req, res) {
         console.log('____add tag______');
         let tag = new Tag(null, escape(req.body.libelle_tag));
         authService.authenticate(req, {
@@ -27,7 +27,14 @@ module.exports.controller = function (app, authService, pool) {
                                 fail: function (err) {
                                     console.log('add tag fail');
                                     res.status(500);
-                                    res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
+                                    res.render('pages/error', {
+                                        locals: {
+                                            error: err,
+                                            title: error,
+                                            authenticated: true,
+                                            isadmin: user.is_admin_user
+                                        }
+                                    });
                                 }
                             });
 
@@ -54,7 +61,7 @@ module.exports.controller = function (app, authService, pool) {
     });
 
     // update a tag
-    app.put('/tag/update', function(req, res){
+    app.put('/tag/update', function (req, res) {
         console.log('____update tag______');
         let tag = new Tag(escape(req.body.id_tag), escape(req.body.libelle_tag));
         authService.authenticate(req, {
@@ -72,7 +79,14 @@ module.exports.controller = function (app, authService, pool) {
                                 fail: function (err) {
                                     console.log('update tag fail');
                                     res.status(500);
-                                    res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
+                                    res.render('pages/error', {
+                                        locals: {
+                                            error: err,
+                                            title: error,
+                                            authenticated: true,
+                                            isadmin: user.is_admin_user
+                                        }
+                                    });
                                 }
                             });
 
@@ -118,7 +132,14 @@ module.exports.controller = function (app, authService, pool) {
                                 fail: function (err) {
                                     console.log('delete tag fail');
                                     res.status(500);
-                                    res.render('pages/error', {locals: {error: err, title: error, authenticated: true, isadmin: user.is_admin_user}});
+                                    res.render('pages/error', {
+                                        locals: {
+                                            error: err,
+                                            title: error,
+                                            authenticated: true,
+                                            isadmin: user.is_admin_user
+                                        }
+                                    });
                                 }
                             });
 
